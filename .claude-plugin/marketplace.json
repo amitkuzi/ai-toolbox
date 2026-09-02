@@ -6,16 +6,10 @@
   },
   "plugins": [
     {
-      "id": "ai-toolbox",
-      "name": "AI Toolbox",
+      "name": "ai-toolbox",
       "description": "Self-maintaining AI tool catalog + five-step, cost-ordered tool-selection gate with an append-only, traceable outcome log.",
       "version": "0.1.0",
-      "source": {
-        "type": "github",
-        "owner": "amitkuzi",
-        "repo": "ai-toolbox",
-        "ref": "main"
-      },
+      "source": "./",
       "tags": ["tool-selection", "agents", "catalog", "routing", "cost", "event-sourcing"],
       "documentation": "https://github.com/amitkuzi/ai-toolbox"
     }
