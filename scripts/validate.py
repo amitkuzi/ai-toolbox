@@ -62,7 +62,8 @@ def check_schema() -> None:
                     fail(f"{where} kind '{kind}' belongs in '{expected_collection}.jsonl', found in '{collection}.jsonl'")
             except ValueError:
                 fail(f"{where} unknown kind '{kind}'")
-            if not kind.endswith(".added") and not ev.get("reason"):
+            if not ev.get("reason"):
+                # D-011: reason is required on every event, unconditionally.
                 fail(f"{where} kind '{kind}' is missing required 'reason'")
             for req_field in KIND_PAYLOAD_REQUIRED.get(kind, []):
                 if req_field not in ev.get("payload", {}):

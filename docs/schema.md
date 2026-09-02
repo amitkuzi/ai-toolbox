@@ -21,9 +21,9 @@ a ★ field or a view drifts from `store project`'s output.
 | `subject_id` | always | the tool / source / model / decision / adr / gap id this event is about |
 | `actor` | always | `human:<id>` \| `agent:<name>` \| `auto:<check>` \| `system:migration` |
 | `via` | always | `route` \| `outcome` \| `daily-run` \| `weekly-run` \| `monthly-audit` \| `ui-manual` \| `migration` |
-| `reason` | **required on every event except an initial `*.added`** | free text, ≥ 1 line |
+| `reason` | **required on every event, unconditionally** (D-011) | free text, ≥ 1 line |
 | `supersedes` | optional | prior `event_id` this event corrects (used by `score.retract`, `adr.superseded`) |
-| `rules_version` | `decision` only | `rules/` semver + short git hash of the `rules/` tree, e.g. `1.0.0+a1b2c3` |
+| `rules_version` | `decision` only | (D-012) `<rules/VERSION contents>+<short git hash of the rules/ tree>`, e.g. `1.0.0+a1b2c3`, computed by `store.py` at append time from `rules/VERSION` and `git rev-parse --short HEAD -- rules/`; falls back to `dev` if either is unavailable |
 | `payload` | always | body, shape depends on `kind` — see §2 |
 
 Rules (P4): no line is ever updated or deleted. `tool.revised` carries only the fields that
@@ -123,7 +123,7 @@ Payload for `gap.opened`: `{"gap": "one line", "blocked_subtask": "...", "type_n
 | Field | ★/⚙ | Notes |
 |---|---|---|
 | `id`, `name` | ★ | slug, string |
-| `type` | ★ | `script \| mcp \| skill \| subagent \| model \| plugin \| schedule \| kb` — **how it is invoked**, drives decision 3 |
+| `type` | ★ | `script \| mcp \| skill \| subagent \| model \| schedule \| kb` — **how it is invoked**, drives decision 3. `plugin` is not a type (D-009) — a plugin bundle is multiple entries tagged `tags: [plugin:<name>]`. |
 | `category` | ★ | `runtime \| model \| agent-framework \| agent-infra \| coding-agent \| api \| gateway \| mcp \| skill \| tool` — **domain**, shortlist only |
 | `purpose` | ★ | one line |
 | `abilities`, `pros`, `cons` | | list |

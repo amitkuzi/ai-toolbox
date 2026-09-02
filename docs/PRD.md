@@ -90,6 +90,7 @@ ai-toolbox/
 ├── commands/{route, outcome, add, gaps, audit}.md
 ├── hooks/hooks.json                # SessionStart, UserPromptSubmit, SubagentStop, Stop
 ├── rules/                          # the logic — numbered in read order
+│   ├── VERSION                     # hand-bumped semver (D-012) — feeds `rules_version` on every `decision`
 │   ├── 00-glossary.md
 │   ├── 01-swarm-gate.md
 │   ├── 02-orchestrator-model.md
@@ -126,7 +127,9 @@ ai-toolbox/
 ```
 user task
   → [SessionStart hook] `store project --summary` → catalog summary + active profile
-  → skill toolbox-route   (reads: `store query tools|models --routable`, profile, rules/)
+  → skill toolbox-route   (reads: `store query tools|models --routable` **plus** a bounded slice
+                            of top-N (default 3) `seed-unverified` candidates by `published_score`,
+                            each flagged `estimate: true`/`trial_candidate: true` — D-008; profile, rules/)
       1 swarm gate        → L0 | L1 | L2 | L3            (+ reason)
       2 model tier        → T0..T3 for orchestrator and each agent (+ reason)
       3 category gate     → per subtask: kb|schedule|script|mcp|skill|model|subagent
@@ -167,9 +170,9 @@ The curator never opens `views/` for editing and never removes a ledger line. A 
 | `subject_id` | the tool / source / model / decision id the event is about |
 | `actor` | `human:<id>` \| `agent:<name>` \| `auto:<check>` \| `system:migration` |
 | `via` | `route` \| `outcome` \| `daily-run` \| `weekly-run` \| `monthly-audit` \| `ui-manual` \| `migration` |
-| `reason` | required on every event except an initial `*.added`; free text, ≥ 1 line |
+| `reason` | **required on every event, unconditionally** (D-011 — no exception for an initial `*.added`); free text, ≥ 1 line |
 | `supersedes` | optional prior `event_id` this event corrects |
-| `rules_version` | `decision` only: `rules/` semver + short hash |
+| `rules_version` | `decision` only: `<rules/VERSION contents>+<short git hash of the rules/ tree>` (D-012). Computed by `store.py` at append time — `rules/VERSION` is a hand-bumped semver file, the hash is `git rev-parse --short HEAD -- rules/`. Accepts an explicit override (for testing); falls back to `dev` if not in a git repo or `rules/VERSION` doesn't exist. |
 | `payload` | body, per `kind` |
 
 Rules: no line is ever updated or deleted. `tool.revised` carries only changed fields. Current state of a tool = fold of its events by `ts`. `views/tools.yaml` is the fold's output, not an input.
@@ -179,7 +182,7 @@ Rules: no line is ever updated or deleted. `tool.revised` carries only changed f
 | Field | Type | Notes |
 |---|---|---|
 | ★ `id`, ★ `name` | slug, string | |
-| ★ `type` | `script` \| `mcp` \| `skill` \| `subagent` \| `model` \| `plugin` \| `schedule` \| `kb` | **how it is invoked** — drives decision 3 |
+| ★ `type` | `script` \| `mcp` \| `skill` \| `subagent` \| `model` \| `schedule` \| `kb` | **how it is invoked** — drives decision 3. **D-009:** `plugin` is not a `type` — a plugin bundle is multiple catalog entries (skill/agent/command/mcp) sharing a `tags: [plugin:<name>]` tag, not a single routable type. |
 | ★ `category` | `runtime` \| `model` \| `agent-framework` \| `agent-infra` \| `coding-agent` \| `api` \| `gateway` \| `mcp` \| `skill` \| `tool` | **domain** — shortlist only |
 | ★ `purpose` | string | one line |
 | `abilities`, `pros`, `cons` | list | |
@@ -192,7 +195,7 @@ Rules: no line is ever updated or deleted. `tool.revised` carries only changed f
 | ★ `license` | SPDX | + `license_notes` |
 | ★ `install`, ★ `auth`, `entrypoint` | string | `auth`: `none` \| `account` \| `api-key` \| `oauth` \| `local-path` |
 | `published_score` | string + source | used **only** to rank the trial queue |
-| ⚙ `my_score_current` | 1–10 | fold of `score.*` events (EMA + decay + human × 1.5); `estimate: true` while `score_samples < 5` |
+| ⚙ `my_score_current` | 1–10 | fold of `score.*` events (EMA α=0.3 + 90-day decay + human × 1.5); `estimate: true` while `score_samples < 5`. **D-013:** global, task-type-agnostic, computed by `store project`, stored here and in `views/scores-summary.yaml`. Distinct from `my_score_ctx` (§7.4-B) — a per-query, task-type-weighted number computed live at ranking time and never stored in a view. |
 | ⚙ `score_samples`, ⚙ `score_trend` | int, `up\|flat\|down` | |
 | ⚙ `review_status` | `seed-unverified` \| `verified` \| `stale` \| `dead` | from the latest `tool.status` |
 | ⚙ `verified` | date | from the latest successful `score.outcome`; stale after 90 d. Absent ⇒ *candidate*, not *routable* |
@@ -202,7 +205,12 @@ Rules: no line is ever updated or deleted. `tool.revised` carries only changed f
 
 ### 6.2 `models.yaml`
 
-`id`, `provider`, `model`, `tier` (T0 local free · T1 cheap cloud · T2 mid · T3 frontier), `input_usd_mtok`, `output_usd_mtok`, `cache_hit_usd_mtok`, `context_k`, `tokens_per_sec`, `data_residency`, `strengths` (`coding | reasoning | classification | hebrew | vision | long-context`), `my_score`, `score_samples`, `verified`.
+`id`, `provider`, `model`, `tier` (T0 local free · T1 cheap cloud · T2 mid · T3 frontier), `input_usd_mtok`, `output_usd_mtok`, `cache_hit_usd_mtok`, `context_k`, `tokens_per_sec`, `data_residency`, `strengths` (`coding | reasoning | classification | hebrew | vision | long-context`), ⚙ `my_score_current`, ⚙ `score_samples`, ⚙ `verified`.
+
+**Resolved (D-010):** `my_score_current` here is ⚙ computed, exactly as in §6.1 — never an
+editable field. It folds `model.*`/`score.*` events the same way tools do: models are
+scored through the same `ledger/scores.jsonl` (§6.3), with `subject_id` set to the model's
+`id` instead of a tool's. `store project` computes it identically for both subject kinds.
 
 ### 6.3 `ledger/scores.jsonl` (append-only; adopts F-401…F-410 from the ai-gateway PRD, plus P2/P3)
 
@@ -311,7 +319,25 @@ effective = w_score · my_score_ctx
 
 `my_score_ctx` = weighted mean of outcome scores for this tool: same `task_type` × 1.0, adjacent × 0.5, any × 0.25; `human:*` × 1.5; decay after 90 days; if `score_samples < 5` ⇒ fall back to the catalog `my_score`, flagged as estimate. Weights `w_*` come from the active profile.
 
+**Resolved (D-013):** `my_score_ctx` and `my_score_current` (§6.1) are two distinct,
+independently-defined quantities, not the same formula described twice. `my_score_current`
+is global and task-type-agnostic — a plain EMA fold over *all* outcomes, computed once by
+`store project` and stored in `views/tools.yaml`/`views/scores-summary.yaml`. `my_score_ctx`
+is per-query and task-type-relevance-weighted — computed live, here, by the ranking step
+from raw `score.*` events at query time, and it is never written to a view (it depends on
+the querying task's `task_type`, which isn't known until query time). Both apply the same
+90-day decay and 1.5× human weighting; they differ in *which* events they average over and
+*when* they're computed.
+
 **C. Cold start** — unchanged from `selection-rules.md` §2a: an estimate never outranks a measurement; `seed-unverified` candidates enter only through a bounded trial (one low-stakes subtask against the incumbent); `published_score` ranks the trial queue and nothing else.
+
+**Resolved (D-008):** the query behind decision 4 (§5.2) is not just `--routable` — it also
+returns a bounded slice (top N=3 by `published_score`) of `seed-unverified` candidates,
+each flagged `estimate: true` / `trial_candidate: true`. Without this, no `seed-unverified`
+tool could ever reach the ranking step to be entered into the bounded trial this clause
+describes, and no tool could ever graduate out of `seed-unverified`. This clause and §5.2
+are the same mechanism described from two angles: §5.2 says what the query returns, this
+clause says what decision 4 does with the `trial_candidate` slice once it arrives.
 
 **Output:** winner, runner-up, one-line install/auth, `reason`. No candidate ⇒ increment `gaps.md` (`hits`), proceed with closest fit, state the compromise.
 

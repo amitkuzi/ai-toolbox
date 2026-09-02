@@ -24,7 +24,7 @@ def _fresh_store(backend_name: str) -> tuple[Store, Path]:
 def test_append_then_query_returns_it(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool"})
         results = store.query("tools", kind="tool.added", subject_id="t1")
         assert len(results) == 1
@@ -36,7 +36,7 @@ def test_append_then_query_returns_it(backend_name: str):
 def test_append_then_project_folds(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool", "my_score": 7})
         written = store.project(collection="tools")
         assert "tools.yaml" in written
@@ -50,9 +50,9 @@ def test_append_then_project_folds(backend_name: str):
 def test_added_plus_revised_folds_to_current_state(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool", "purpose": "old"})
-        store.append(kind="tool.added", subject_id="t2", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t2", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool Two", "type": "script", "category": "tool", "purpose": "unrelated"})
         store.append(kind="tool.revised", subject_id="t1", actor="human:amit", via="ui-manual",
                      reason="fix purpose", payload={"purpose": "new"})
@@ -69,7 +69,7 @@ def test_added_plus_revised_folds_to_current_state(backend_name: str):
 def test_trace_returns_full_chain(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool"})
         store.append(kind="decision", subject_id="d-1", actor="agent:orchestrator", via="route",
                      reason="chose t1", payload={"chosen": "t1"})
@@ -87,7 +87,7 @@ def test_trace_returns_full_chain(backend_name: str):
 def test_missing_reason_on_non_initial_event_raises(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", payload={})
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test", payload={})
         raised = False
         try:
             store.append(kind="tool.revised", subject_id="t1", actor="human:amit", via="ui-manual", payload={})
@@ -101,7 +101,7 @@ def test_missing_reason_on_non_initial_event_raises(backend_name: str):
 def test_views_never_read_as_input(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool"})
         store.project(collection="tools")
         # corrupt the view — if append/query ever read views as input this would break them
@@ -118,7 +118,7 @@ def test_views_never_read_as_input(backend_name: str):
 def test_score_fold_estimate_below_five_samples(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual",
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test",
                      payload={"name": "Tool One", "type": "script", "category": "tool"})
         store.append(kind="score.seed", subject_id="d-seed", actor="system:migration", via="migration",
                      reason="seed", payload={"tool_id": "t1", "score": 6})
@@ -135,7 +135,7 @@ def test_score_fold_estimate_below_five_samples(backend_name: str):
 def test_retract_removes_a_sample(backend_name: str):
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", payload={})
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test", payload={})
         e1 = store.append(kind="score.seed", subject_id="d-seed", actor="system:migration", via="migration",
                           reason="seed", payload={"tool_id": "t1", "score": 6})
         store.append(kind="score.outcome", subject_id="d-1", actor="auto:validator", via="outcome",
@@ -155,7 +155,7 @@ def test_append_only_ledger_file_grows_monotonically(backend_name: str):
         return  # this scenario is about the JSONL file specifically
     store, tmp = _fresh_store(backend_name)
     try:
-        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", payload={})
+        store.append(kind="tool.added", subject_id="t1", actor="human:amit", via="ui-manual", reason="test", payload={})
         path = tmp / "ledger" / "tools.jsonl"
         before = path.read_text(encoding="utf-8")
         store.append(kind="tool.revised", subject_id="t1", actor="human:amit", via="ui-manual",
