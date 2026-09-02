@@ -1,0 +1,13 @@
+# secrets / local
+.env
+*.local.json
+.claude/settings.local.json
+logs/
+__pycache__/
+*.pyc
+.venv/
+# private catalog never leaves this machine in the public repo (see docs/PRD.md §1a, work plan 5.4)
+# catalog/ledger/scores.jsonl
+
+# leftover from a failed git-init attempt in the Cowork sandbox (locked temp files, no repo content)
+_to_delete-git-broken-locks/

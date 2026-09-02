@@ -1,0 +1,9 @@
+{
+  "name": "ai-toolbox",
+  "version": "0.1.0",
+  "description": "Self-maintaining AI tool catalog + five-step, cost-ordered tool-selection gate with an append-only, traceable outcome log.",
+  "author": { "name": "Amit Kuzi", "email": "amitkuzi@gmail.com" },
+  "repository": "https://github.com/amitkuzi/ai-toolbox",
+  "license": "MIT",
+  "keywords": ["tool-selection", "agents", "catalog", "routing", "cost", "event-sourcing"]
+}
