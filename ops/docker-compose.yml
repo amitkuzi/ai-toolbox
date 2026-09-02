@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  runner:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile
+    environment:
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+      - TOOLBOX_BASE_DIR=/workspace/catalog
+    volumes:
+      - ..:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock  # For docker-in-docker if needed
+    working_dir: /workspace
+    command: bash ops/run-task.sh ${TASK_TYPE:-daily}
+    profiles:
+      - local
+
+  # For production, a simpler image without the build context
+  runner-slim:
+    image: ai-toolbox:latest
+    environment:
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+      - TOOLBOX_BASE_DIR=/workspace/catalog
+    volumes:
+      - /opt/ai-toolbox:/workspace
+    working_dir: /workspace
+    command: bash ops/run-task.sh ${TASK_TYPE:-daily}
+    profiles:
+      - prod
