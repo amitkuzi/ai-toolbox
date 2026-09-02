@@ -30,7 +30,7 @@ AI Toolbox is an "operating system for tool selection": a self-maintaining catal
 |---|---|---|
 | **P1 — Storage behind an abstraction** | `tools.yaml` is an *implementation* of storage, not the API. Every skill, agent and command reaches data only through the **Catalog Store** (`scripts/store.py`) with four operations: `append`, `query`, `project`, `trace`. | V1 backend = `files` (JSONL + YAML in git). Future backends: `sqlite`, `postgres`, enterprise storage (Blob/S3, Dataverse, …). Switching = `--backend`; rules and skills do not change. No file under `rules/`, `skills/`, `agents/`, `commands/` mentions a catalog path. A contract test runs identically against every backend. |
 | **P2 — Every decision and its reasoning is logged and traceable** | A `decision` event carries: task input, profile, `rules_version` (+hash), swarm level and why, tier and why, and per subtask **every candidate considered** with its effective score, the winner, runner-up and a free-text `reason`. | `/toolbox:trace <decision_id>` prints the full chain: decision → candidates → outcomes → score impact → which catalog events were in force at that moment (`as_of`). There are no silent decisions. |
-| **P3 — Scores are additive, never replaced** | There is no editable `my_score` field. There are **score events**: `score.seed` (initial estimate + reason), `score.outcome`, `score.human`, `score.retract`. `my_score_current` is a *computed* fold (EMA + decay + human weight). | `rescore.py` is a projection, not an editor. Full score history is always available per tool, per task type, per actor. |
+| **P3 — Scores are additive, never replaced** | There is no editable `my_score` field. There are **score events**: `score.seed` (initial estimate + reason), `score.outcome`, `score.human`, `score.retract`. `my_score_current` is a *computed* fold (EMA + decay + human weight). | `store.py`'s score fold (`Store.project()`) is a projection, not an editor. Full score history is always available per tool, per task type, per actor. |
 | **P4 — Data is immutable; the LLM only appends** | Every collection is a ledger of events (`tool.added`, `tool.revised`, `tool.status`, `tool.retired`, `source.*`, `model.*`, `decision`, `score.*`, `adr.*`, `gap.*`). Every event carries `event_id`, `ts`, `actor`, `via`, `reason` (required for anything but an initial add), optional `supersedes`. "Update" = new event referencing the `id`. "Delete" = `*.retired` event with a reason. | The LLM (curator, route, outcome) **never edits** an existing line and never writes views. CI fails if a diff under `ledger/` deletes or modifies a line, or if an event lacks `ts`/`actor`/`reason`. `views/*` are produced only by `store project`; CI asserts `views == project(ledger)`. |
 
 **Effect on what exists today:** the current `tools.yaml` becomes a **view** (`views/tools.yaml`) — human-readable, diff-friendly, but not the source of truth. Truth is `ledger/tools.jsonl`. Phase 1 migration converts every existing record into a `tool.added` event with `via: migration` and a `reason` citing the source file and its `last_reviewed`.
@@ -114,8 +114,10 @@ ai-toolbox/
 ├── scripts/
 │   ├── store.py                    # Catalog Store adapter (P1): append | query | project | trace
 │   ├── backends/{files.py, sqlite.py}   # + postgres / enterprise later; one contract test for all
-│   ├── validate.py                 # schema + append-only guard + views == projection
-│   └── rescore.py                  # score projection (P3) — reads events, writes nothing to ledger
+│   └── validate.py                 # schema + append-only guard + views == projection
+# (no separate rescore.py — the score projection lives in store.py's
+#  Store.project()/_fold_scores(), so P3's "projection, not an editor" holds
+#  without a second file computing the same fold; see rules/05-outcome-scoring.md §B)
 ├── ops/                            # Docker + cron alternative
 ├── .github/workflows/{validate, daily-refresh, weekly-sources, monthly-audit}.yml
 ├── docs/
@@ -345,7 +347,7 @@ clause says what decision 4 does with the `trial_candidate` slice once it arrive
 
 Collected per participating `tool_id`: `success | partial | fail`, `rework`, `duration_s`, `cost_usd` (measured via LiteLLM when present, else agent estimate prefixed `est:`), `score` 1–10 + `reason`, `scored_by`, `escalated_from`.
 
-Score projection (daily, by `store project` / `rescore.py` — a computation, never an edit, P3):
+Score projection (daily, by `store project` — a computation, never an edit, P3):
 
 ```
 events = store.query("scores", tool_id=T, kinds=[score.seed, score.outcome, score.human]) minus retracted

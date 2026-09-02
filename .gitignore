@@ -3,6 +3,7 @@
 *.local.json
 .claude/settings.local.json
 logs/
+hooks/.reminded.json
 __pycache__/
 *.pyc
 .venv/

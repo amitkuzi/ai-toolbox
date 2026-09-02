@@ -7,6 +7,7 @@ agent-3dprint-guru:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 agent-architect:
   my_score_current: 8
   score_samples: 1
@@ -16,6 +17,7 @@ agent-architect:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 agent-cad-expert:
   my_score_current: 6
   score_samples: 1
@@ -25,6 +27,7 @@ agent-cad-expert:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 agent-explorer:
   my_score_current: 7
   score_samples: 1
@@ -34,6 +37,7 @@ agent-explorer:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 agent-guide:
   my_score_current: 9
   score_samples: 1
@@ -43,6 +47,7 @@ agent-guide:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 agent-implementor:
   my_score_current: 8
   score_samples: 1
@@ -52,6 +57,7 @@ agent-implementor:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 agent-materials-engineer:
   my_score_current: 6
   score_samples: 1
@@ -61,6 +67,7 @@ agent-materials-engineer:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 agent-researcher:
   my_score_current: 8
   score_samples: 1
@@ -70,6 +77,7 @@ agent-researcher:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 agent-validator:
   my_score_current: 8
   score_samples: 1
@@ -79,6 +87,7 @@ agent-validator:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 aider:
   my_score_current: 8
   score_samples: 1
@@ -88,6 +97,7 @@ aider:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 anthropic-api:
   my_score_current: 9
   score_samples: 1
@@ -97,6 +107,7 @@ anthropic-api:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 anythingllm:
   my_score_current: 6
   score_samples: 1
@@ -106,6 +117,7 @@ anythingllm:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 autogen:
   my_score_current: 5
   score_samples: 1
@@ -115,6 +127,7 @@ autogen:
   by_task_type: {}
   by_actor:
     system:migration: 5.0
+  verified: null
 browser-use:
   my_score_current: 8
   score_samples: 1
@@ -124,6 +137,7 @@ browser-use:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 claude-code:
   my_score_current: 9
   score_samples: 1
@@ -133,6 +147,7 @@ claude-code:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 context7:
   my_score_current: 7
   score_samples: 1
@@ -142,6 +157,7 @@ context7:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 crawl4ai:
   my_score_current: 8
   score_samples: 1
@@ -151,6 +167,7 @@ crawl4ai:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 crewai:
   my_score_current: 7
   score_samples: 1
@@ -160,6 +177,7 @@ crewai:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 deepseek-r1-14b:
   my_score_current: 7
   score_samples: 1
@@ -169,6 +187,7 @@ deepseek-r1-14b:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 deepseek-v4:
   my_score_current: 8
   score_samples: 1
@@ -178,6 +197,7 @@ deepseek-v4:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 devstral:
   my_score_current: 8
   score_samples: 1
@@ -187,6 +207,7 @@ devstral:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 firecrawl:
   my_score_current: 7
   score_samples: 1
@@ -196,6 +217,7 @@ firecrawl:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 freecad-headless:
   my_score_current: 0
   score_samples: 1
@@ -205,6 +227,7 @@ freecad-headless:
   by_task_type: {}
   by_actor:
     system:migration: 0.0
+  verified: null
 gemini-api:
   my_score_current: 8
   score_samples: 1
@@ -214,6 +237,7 @@ gemini-api:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 gemma3:
   my_score_current: 7
   score_samples: 1
@@ -223,6 +247,7 @@ gemma3:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 git:
   my_score_current: 10
   score_samples: 1
@@ -232,6 +257,7 @@ git:
   by_task_type: {}
   by_actor:
     system:migration: 10.0
+  verified: null
 glm-5-2:
   my_score_current: 8
   score_samples: 1
@@ -241,6 +267,7 @@ glm-5-2:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 gpt-oss-20b:
   my_score_current: 9
   score_samples: 1
@@ -250,6 +277,7 @@ gpt-oss-20b:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 kb-3dmodel-source:
   my_score_current: 7
   score_samples: 1
@@ -259,6 +287,7 @@ kb-3dmodel-source:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 kb-llm-instructions:
   my_score_current: 8
   score_samples: 1
@@ -268,6 +297,7 @@ kb-llm-instructions:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 kb-projects-registry:
   my_score_current: 8
   score_samples: 1
@@ -277,6 +307,7 @@ kb-projects-registry:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 langflow:
   my_score_current: 6
   score_samples: 1
@@ -286,6 +317,7 @@ langflow:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 langfuse:
   my_score_current: 7
   score_samples: 1
@@ -295,6 +327,7 @@ langfuse:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 langgraph:
   my_score_current: 8
   score_samples: 1
@@ -304,6 +337,7 @@ langgraph:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 llama-cpp:
   my_score_current: 7
   score_samples: 1
@@ -313,6 +347,7 @@ llama-cpp:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 lm-studio:
   my_score_current: 6
   score_samples: 1
@@ -322,6 +357,7 @@ lm-studio:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 localai:
   my_score_current: 7
   score_samples: 1
@@ -331,6 +367,7 @@ localai:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 mcp:
   my_score_current: 9
   score_samples: 1
@@ -340,6 +377,7 @@ mcp:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 mcp-chrome:
   my_score_current: 7
   score_samples: 1
@@ -349,6 +387,7 @@ mcp-chrome:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 mcp-computer-use:
   my_score_current: 5
   score_samples: 1
@@ -358,6 +397,7 @@ mcp-computer-use:
   by_task_type: {}
   by_actor:
     system:migration: 5.0
+  verified: null
 mcp-gmail:
   my_score_current: 8
   score_samples: 1
@@ -367,6 +407,7 @@ mcp-gmail:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 mcp-google-calendar:
   my_score_current: 8
   score_samples: 1
@@ -376,6 +417,7 @@ mcp-google-calendar:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 mcp-google-drive:
   my_score_current: 7
   score_samples: 1
@@ -385,6 +427,7 @@ mcp-google-drive:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 mcp-postman:
   my_score_current: 6
   score_samples: 1
@@ -394,6 +437,7 @@ mcp-postman:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 mcp-registry-search:
   my_score_current: 8
   score_samples: 1
@@ -403,6 +447,7 @@ mcp-registry-search:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 mcp-scheduled-tasks:
   my_score_current: 8
   score_samples: 1
@@ -412,6 +457,7 @@ mcp-scheduled-tasks:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 mem0:
   my_score_current: 7
   score_samples: 1
@@ -421,6 +467,7 @@ mem0:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 ms-agent-framework:
   my_score_current: 8
   score_samples: 1
@@ -430,6 +477,7 @@ ms-agent-framework:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 ollama:
   my_score_current: 9
   score_samples: 1
@@ -439,6 +487,7 @@ ollama:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 openhands:
   my_score_current: 7
   score_samples: 1
@@ -448,6 +497,7 @@ openhands:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 openrouter:
   my_score_current: 8
   score_samples: 1
@@ -457,6 +507,7 @@ openrouter:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 phi-4:
   my_score_current: 7
   score_samples: 1
@@ -466,6 +517,7 @@ phi-4:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 pydantic-ai:
   my_score_current: 8
   score_samples: 1
@@ -475,6 +527,7 @@ pydantic-ai:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 python3:
   my_score_current: 10
   score_samples: 1
@@ -484,6 +537,7 @@ python3:
   by_task_type: {}
   by_actor:
     system:migration: 10.0
+  verified: null
 qwen25-coder-14b:
   my_score_current: 8
   score_samples: 1
@@ -493,6 +547,7 @@ qwen25-coder-14b:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 qwen3:
   my_score_current: 9
   score_samples: 1
@@ -502,6 +557,7 @@ qwen3:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 ragflow:
   my_score_current: 7
   score_samples: 1
@@ -511,6 +567,7 @@ ragflow:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 semantic-kernel:
   my_score_current: 8
   score_samples: 1
@@ -520,6 +577,7 @@ semantic-kernel:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 skill-canvas-design:
   my_score_current: 7
   score_samples: 1
@@ -529,6 +587,7 @@ skill-canvas-design:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 skill-docx:
   my_score_current: 9
   score_samples: 1
@@ -538,6 +597,7 @@ skill-docx:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 skill-grill-me:
   my_score_current: 7
   score_samples: 1
@@ -547,6 +607,7 @@ skill-grill-me:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 skill-mcp-builder:
   my_score_current: 7
   score_samples: 1
@@ -556,6 +617,7 @@ skill-mcp-builder:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 skill-pdf:
   my_score_current: 8
   score_samples: 1
@@ -565,6 +627,7 @@ skill-pdf:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 skill-pptx:
   my_score_current: 8
   score_samples: 1
@@ -574,6 +637,7 @@ skill-pptx:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 skill-schedule:
   my_score_current: 8
   score_samples: 1
@@ -583,6 +647,7 @@ skill-schedule:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 skill-skill-creator:
   my_score_current: 8
   score_samples: 1
@@ -592,6 +657,7 @@ skill-skill-creator:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 skill-theme-factory:
   my_score_current: 6
   score_samples: 1
@@ -601,6 +667,7 @@ skill-theme-factory:
   by_task_type: {}
   by_actor:
     system:migration: 6.0
+  verified: null
 skill-web-artifacts-builder:
   my_score_current: 7
   score_samples: 1
@@ -610,6 +677,7 @@ skill-web-artifacts-builder:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 skill-xlsx:
   my_score_current: 9
   score_samples: 1
@@ -619,6 +687,7 @@ skill-xlsx:
   by_task_type: {}
   by_actor:
     system:migration: 9.0
+  verified: null
 vllm:
   my_score_current: 8
   score_samples: 1
@@ -628,6 +697,7 @@ vllm:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null
 web-fetch:
   my_score_current: 7
   score_samples: 1
@@ -637,6 +707,7 @@ web-fetch:
   by_task_type: {}
   by_actor:
     system:migration: 7.0
+  verified: null
 web-search:
   my_score_current: 8
   score_samples: 1
@@ -646,3 +717,4 @@ web-search:
   by_task_type: {}
   by_actor:
     system:migration: 8.0
+  verified: null

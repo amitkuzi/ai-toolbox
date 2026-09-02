@@ -275,6 +275,10 @@ class Store:
                 if tt:
                     by_task_type.setdefault(tt, []).append(e["payload"].get("score"))
                 by_actor.setdefault(e["actor"], []).append(e["payload"].get("score"))
+            verified_dates = [
+                e["ts"][:10] for e in evs
+                if e["kind"] == "score.outcome" and e["payload"].get("result") == "success"
+            ]
             result[tool_id] = {
                 "my_score_current": current,
                 "score_samples": samples,
@@ -283,6 +287,7 @@ class Store:
                 "last_outcome_ts": evs[-1]["ts"],
                 "by_task_type": {k: round(sum(v) / len(v), 2) for k, v in by_task_type.items()},
                 "by_actor": {k: round(sum(v) / len(v), 2) for k, v in by_actor.items()},
+                "verified": max(verified_dates) if verified_dates else None,
             }
         return result
 
@@ -325,6 +330,8 @@ class Store:
                 rec["score_trend"] = sc["score_trend"]
                 if sc["estimate"]:
                     rec["estimate"] = True
+                if sc["verified"]:
+                    rec["verified"] = max(rec.get("verified", ""), sc["verified"])
             elif "my_score" in rec:
                 rec["my_score_current"] = rec["my_score"]
                 rec["score_samples"] = 0
