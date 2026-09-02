@@ -8,10 +8,10 @@ weights:                         # decision 4
   agent_ready: 0.15
   cost: 0.15
   fresh: 0.10
-task_type_affinity:              # which task types this actor runs most; used for score context
-  file-batch: 1.0
-  cad: 1.0
-  hebrew-report: 1.0
-  code-csharp: 0.8
-paths:
-  cad_source: "C:/Users/Amit.kuzi/OneDrive/Documents/3dModel"
+ 
+toolbox:
+  enabled: true
+  auto_validate_on_startup: true  # validate catalog on SessionStart
+  min_tier_for_auto_delegation: 1 # cost tier threshold before auto-routing
+  log_decisions: true             # append all decisions to ledger
+  trace_on_outcome: true          # enable /toolbox:trace for review
