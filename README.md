@@ -13,7 +13,8 @@ Status: **v0.5.0 — Curator/assessor/auditor agents + scheduled runs ready. Pha
 # Visit https://claude.ai/code or download the desktop app
 
 # 2. Install the plugin
-/plugin install amitkuzi/ai-toolbox
+/plugin marketplace add amitkuzi/ai-toolbox
+/plugin install ai-toolbox@ai-toolbox
 
 # 3. Route your first task
 /toolbox:route rename 200 files by convention

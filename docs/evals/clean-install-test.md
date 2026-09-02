@@ -30,7 +30,8 @@ They follow `docs/customer-guide.md` exactly. Should work with no surprises.
 # (if not already installed — they download from claude.ai/code)
 
 # Step 2: Install the plugin
-/plugin install amitkuzi/ai-toolbox
+/plugin marketplace add amitkuzi/ai-toolbox
+/plugin install ai-toolbox@ai-toolbox
 
 # Expected: ✅ Plugin installed successfully
 # Check: ~/.claude/plugins/ai-toolbox exists and has skills/, agents/, etc.

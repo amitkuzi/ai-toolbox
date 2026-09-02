@@ -19,7 +19,8 @@ Run AI Toolbox on real work for 7 days. Measure:
 ### Install plugin
 
 ```bash
-/plugin install amitkuzi/ai-toolbox
+/plugin marketplace add amitkuzi/ai-toolbox
+/plugin install ai-toolbox@ai-toolbox
 ```
 
 ### Configure profile

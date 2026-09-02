@@ -21,7 +21,7 @@ description: Operating system for tool selection — route tasks to the right to
 
 This is a pointer to the full AI Toolbox plugin. To use it:
 
-1. **Install:** `/plugin install amitkuzi/ai-toolbox`
+1. **Install:** `/plugin marketplace add amitkuzi/ai-toolbox` then `/plugin install ai-toolbox@ai-toolbox`
 2. **Route:** `/toolbox:route <task>`
 3. **Trace:** `/toolbox:trace <decision-id>`
 4. **Audit:** `/toolbox:audit`
@@ -76,7 +76,7 @@ Add to `Skills/README.md` (or `Skills/CATALOG.md`):
 
 **Routing engine for task → tool matching.** Decision rules (swarm level, model tier, category, ranking, outcome scoring), self-maintaining catalog with curator/assessor/auditor agents, full decision tracing.
 
-**Install:** `/plugin install amitkuzi/ai-toolbox`  
+**Install:** `/plugin marketplace add amitkuzi/ai-toolbox` then `/plugin install ai-toolbox@ai-toolbox`  
 **Repo:** https://github.com/amitkuzi/ai-toolbox
 ```
 

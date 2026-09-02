@@ -21,7 +21,8 @@ If you don't have Claude Code installed:
 In Claude Code, run:
 
 ```
-/plugin install amitkuzi/ai-toolbox
+/plugin marketplace add amitkuzi/ai-toolbox
+/plugin install ai-toolbox@ai-toolbox
 ```
 
 Or use the plugin browser:
