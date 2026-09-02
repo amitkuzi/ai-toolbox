@@ -4,13 +4,44 @@
 cost-ordered decision gate an orchestrating agent follows before delegating work, and an
 append-only, fully traceable outcome log that feeds scores back into the catalog.
 
-Status: **v0.1.0 — skeleton. PRD and work plan approved; implementation starts at phase 0.**
+Status: **v0.5.0 — Curator/assessor/auditor agents + scheduled runs ready. Phases 0–4 complete.**
+
+## Install (3 commands)
+
+```bash
+# 1. Install Claude Code (if needed)
+# Visit https://claude.ai/code or download the desktop app
+
+# 2. Install the plugin
+/plugin install amitkuzi/ai-toolbox
+
+# 3. Route your first task
+/toolbox:route rename 200 files by convention
+```
+
+See [`docs/customer-guide.md`](docs/customer-guide.md) for setup and first steps.
+
+## Quick reference
+
+| Command | What |
+|---|---|
+| `/toolbox:route <task>` | Route a task to the best tool |
+| `/toolbox:outcome <id>` | Log the outcome after running |
+| `/toolbox:trace <id>` | See why this tool was picked |
+| `/toolbox:add <tool>` | Manually add a tool |
+| `/toolbox:audit` | Run audit out-of-schedule |
+
+## Documentation
 
 | Read this | For |
 |---|---|
-| [`docs/PRD.md`](docs/PRD.md) | What is being built, the four data principles, the five decisions, schemas |
-| [`docs/he/WorkPlan.md`](docs/he/WorkPlan.md) | Phased work plan (Hebrew) |
-| [`handoffs/`](handoffs/) | Session-to-session handoff notes — start with the newest |
+| [`docs/customer-guide.md`](docs/customer-guide.md) | Installation and first steps |
+| [`docs/architecture.md`](docs/architecture.md) | System overview and design |
+| [`docs/rules.md`](docs/rules.md) | The five routing decisions |
+| [`docs/curator.md`](docs/curator.md) | Curator/assessor/auditor agents |
+| [`docs/profiles.md`](docs/profiles.md) | How to configure your preferences |
+| [`docs/PRD.md`](docs/PRD.md) | Full requirements, schemas, design decisions |
+| [`docs/he/WorkPlan.md`](docs/he/WorkPlan.md) | Work plan and progress (Hebrew) |
 
 ## The five decisions
 
