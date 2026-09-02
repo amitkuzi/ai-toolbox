@@ -1,0 +1,2665 @@
+tools:
+- agent_ready: true
+  auth: local-path
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - 3d-print
+  - pipeline
+  entrypoint: Agent(subagent_type='general-purpose') + LLM/roles/3dprint-guru.md
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-3dprint-guru
+  notes: Owns the 3MF handoff between CAD Expert and Materials Engineer.
+  purpose: 'End-to-end pipeline: model -> slice -> print profile -> post-processing'
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-3dprint-guru
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJG001RQ4EWW3M
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - planning
+  - architecture
+  entrypoint: Agent(subagent_type='Plan')
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-architect
+  notes: Read-only. Cannot write files - returns a plan, orchestrator delegates execution.
+  purpose: Design implementation plans and architectural trade-offs before any code
+    is written
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-architect
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJ2000N8RT31Z2
+- agent_ready: true
+  auth: local-path
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - cad
+  - 3d-print
+  - mechanical
+  entrypoint: Agent(subagent_type='general-purpose') + LLM/roles/cad-expert.md
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-cad-expert
+  notes: Works from ${profiles.amit.paths.cad_source}. Pairs with freecad-headless.
+  purpose: FreeCAD parametric modelling, sketches, constraints, assemblies
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-cad-expert
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJE000A0BEKR3S
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - search
+  - codebase
+  entrypoint: Agent(subagent_type='Explore')
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-explorer
+  notes: Reads excerpts only. Locates code; does not review or audit it.
+  purpose: Broad read-only fan-out search across many files and naming conventions
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-explorer
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJ600277N5CJJM
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: cloud
+  domains:
+  - tooling
+  - claude-platform
+  entrypoint: Agent(subagent_type='claude-code-guide')
+  install: n-a
+  license: n-a
+  local_capable: false
+  name: agent-guide
+  notes: Reuse a running instance via SendMessage instead of respawning.
+  purpose: Answer questions about Claude Code, Agent SDK, Claude API, MCP setup
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-guide
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJC000CKB8Y7TP
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - implementation
+  entrypoint: Agent(subagent_type='general-purpose')
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-implementor
+  notes: Output goes to Team_workspace/handoffs/ - never straight to inbox/.
+  purpose: Execute a defined plan - write and modify files
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-implementor
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJ8001X9NXBT4J
+- agent_ready: true
+  auth: local-path
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - 3d-print
+  - materials
+  entrypoint: Agent(subagent_type='general-purpose') + LLM/roles/materials-engineer.md
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-materials-engineer
+  notes: Should be backed by a datasheet KB - see gaps.md G-002.
+  purpose: Filament selection, thermal/mechanical properties, print settings per material
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-materials-engineer
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJE002W8F06TVW
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: cloud
+  domains:
+  - research
+  - analysis
+  entrypoint: Agent(subagent_type='general-purpose')
+  install: n-a
+  license: n-a
+  local_capable: false
+  name: agent-researcher
+  notes: Starts cold - must be given full context in the prompt.
+  purpose: Multi-step research over web and repo, returns synthesized findings
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-researcher
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJ6000EYB1R284
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: included
+  data_residency: local
+  domains:
+  - validation
+  - qa
+  entrypoint: Agent(subagent_type='general-purpose')
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: agent-validator
+  notes: Mandatory final step in the pipeline. Reads drafts/, approves move to inbox/.
+  purpose: Gate before inbox/ - fact-check, verify math, check Hebrew output quality
+  review_status: verified
+  type: subagent
+  verified: '2026-08-13'
+  id: agent-validator
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJA001ZH3FFFB2
+- abilities:
+  - git-aware edits
+  - multi-file
+  - works with local Ollama models
+  - scriptable
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: coding-agent
+  cons:
+  - terminal-only
+  - quality tracks the backing model
+  cost: free
+  cost_notes: free; model cost depends on backend (free if local)
+  data_residency: local
+  domains:
+  - cli
+  - coding-agent
+  - local
+  - git
+  install: pip install aider-install && aider-install
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Aider
+  notes: Repo last pushed 2026-05-22 (~3 months quiet as of this review) — still usable,
+    but watch for it going stale.
+  pros:
+  - open source
+  - model-agnostic (use Devstral/Qwen locally)
+  - CLI-automatable
+  published_score: 48321 GitHub stars (2026-08-19)
+  purpose: Open-source terminal coding agent; pairs with any model incl. local
+  repo: https://github.com/Aider-AI/aider
+  review_status: verified
+  tags:
+  - cli
+  - coding-agent
+  - local
+  - git
+  type: script
+  id: aider
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZG000YZHGE6RY
+  - 0000003831QWVF0001GQCW5MM5
+- abilities:
+  - strong reasoning/coding
+  - tool/function calling
+  - MCP
+  - batch
+  - streaming
+  agent_ready: true
+  auth: api-key
+  autonomy: 5
+  category: api
+  cons:
+  - paid per token
+  - cloud (data leaves machine)
+  cost: paid
+  cost_notes: per-token; see current pricing
+  data_residency: cloud
+  domains:
+  - api
+  - frontier
+  - mcp
+  - byok
+  homepage: https://docs.claude.com
+  install: pip install anthropic   (API key set)
+  license: proprietary
+  local_capable: false
+  maturity: stable
+  name: Anthropic API (Claude)
+  pros:
+  - top-tier quality
+  - MCP-native
+  - you already hold a key
+  purpose: Frontier Claude models via API; tool use, MCP, long context
+  review_status: seed-unverified
+  tags:
+  - api
+  - frontier
+  - mcp
+  - byok
+  type: model
+  id: anthropic-api
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVFA001XTBTAGQZ
+- abilities:
+  - document workspaces
+  - built-in vector DB
+  - multi-user
+  - agent skills
+  - MCP client
+  - desktop app or Docker server
+  agent_ready: true
+  auth: none
+  autonomy: 3
+  category: tool
+  cons:
+  - an app not a library — agents drive it over its API rather than importing it
+  - less controllable than a hand-built RAG chain
+  - the embedded vector store suits personal scale not production
+  cost: free
+  cost_notes: OSS self-hosted is free; a hosted cloud tier is offered.
+  data_residency: local
+  domains:
+  - rag
+  - desktop-app
+  - self-hosted
+  - ollama-friendly
+  - mcp-client
+  install: docker run -p 3001:3001 mintplexlabs/anythingllm  ||  desktop app from
+    https://anythingllm.com
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: AnythingLLM
+  pros:
+  - MIT
+  - single install with batteries included and no separate vector DB
+  - points at Ollama out of the box
+  - desktop app needs no infrastructure
+  published_score: 64903 GitHub stars (2026-08-19)
+  purpose: All-in-one desktop/Docker app for chatting with your documents over local
+    or cloud models
+  repo: https://github.com/Mintplex-Labs/anything-llm
+  review_status: verified
+  tags:
+  - rag
+  - desktop-app
+  - self-hosted
+  - ollama-friendly
+  - mcp-client
+  type: script
+  id: anythingllm
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZC000YBZTR8B7
+  - 0000003831QWVFW0004Y3R13RM
+- abilities:
+  - multi-agent chat orchestration
+  - code-executing agents
+  - human-in-the-loop steps
+  - async event-driven core (v0.4+)
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - last pushed 2026-04-15 — four months quiet while effort consolidates into ms-agent-framework
+  - CC-BY-4.0 is a content licence not a software one and needs legal review before
+    commercial use
+  - the v0.2 to v0.4 rewrite churned the API
+  cost: free
+  data_residency: hybrid
+  domains:
+  - multi-agent
+  - microsoft
+  - python
+  - licence-review-needed
+  - overlaps-ms-agent-framework
+  install: pip install autogen-agentchat autogen-ext[openai]
+  license: CC-BY-4.0
+  local_capable: true
+  maturity: stable
+  name: AutoGen (Microsoft)
+  pros:
+  - strong research pedigree
+  - mature multi-agent patterns
+  - works against local OpenAI-compatible endpoints incl. Ollama
+  published_score: 60505 GitHub stars (2026-08-19)
+  purpose: Multi-agent conversation framework — agents that talk to each other to
+    solve a task
+  repo: https://github.com/microsoft/autogen
+  review_status: verified
+  tags:
+  - multi-agent
+  - microsoft
+  - python
+  - licence-review-needed
+  - overlaps-ms-agent-framework
+  type: script
+  id: autogen
+  last_reviewed: '2026-09-02'
+  my_score_current: 5
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZ8000T5D4SJGW
+  - 0000003831QWVYG00160F7C3KT
+  - 0000003831QWVFM001ZQ7ND0KE
+- abilities:
+  - DOM-aware page navigation
+  - form filling
+  - structured extraction
+  - multi-step web tasks
+  - headless or headed Chromium
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - token-hungry — every step ships page state to the model
+  - brittle on JS-heavy or bot-protected sites
+  - needs a real browser installed
+  cost: free
+  cost_notes: Library is free; the real cost is LLM tokens per step. A hosted cloud
+    tier exists but is not required.
+  data_residency: local
+  domains:
+  - browser
+  - automation
+  - scraping
+  - web-agent
+  - python
+  install: pip install browser-use && playwright install chromium
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: browser-use
+  pros:
+  - most-adopted browser-agent library (110k stars)
+  - MIT
+  - runs fully local against local Chromium
+  - works with any LLM incl. Ollama
+  published_score: 109691 GitHub stars (2026-08-19)
+  purpose: Driver that lets an LLM operate a real browser — navigate, click, fill,
+    extract
+  repo: https://github.com/browser-use/browser-use
+  review_status: verified
+  tags:
+  - browser
+  - automation
+  - scraping
+  - web-agent
+  - python
+  type: script
+  id: browser-use
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZ6000122H4PSW
+  - 0000003831QWVYE000HF4MCD3B
+  - 0000003831QWVFG000HR03M4J6
+- abilities:
+  - repo-aware edits
+  - multi-file changes
+  - tool/MCP use
+  - headless `-p` runs
+  agent_ready: true
+  auth: api-key
+  autonomy: 5
+  category: coding-agent
+  cons:
+  - paid usage
+  - needs permission config for unattended runs
+  cost: paid
+  cost_notes: via Claude subscription or API credits
+  data_residency: cloud
+  domains:
+  - coding-agent
+  - mcp
+  - automation
+  homepage: https://docs.claude.com
+  install: npm i -g @anthropic-ai/claude-code   (verify current package/flags)
+  license: proprietary
+  local_capable: false
+  maturity: stable
+  name: Claude Code
+  pros:
+  - strong agentic coding
+  - MCP-native
+  - scriptable for automation (this repo's scheduler)
+  purpose: Anthropic's agentic coding tool (CLI + desktop/IDE); headless mode
+  review_status: seed-unverified
+  tags:
+  - coding-agent
+  - mcp
+  - automation
+  type: script
+  id: claude-code
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEY001SHPCT8NC
+- abilities:
+  - fetch current API docs into agent context
+  - reduce stale-API hallucinations
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: mcp
+  cons:
+  - coverage varies by library
+  cost: metered
+  data_residency: cloud
+  domains:
+  - mcp
+  - docs
+  - coding-agent
+  homepage: https://context7.com
+  install: add as MCP server in your client config
+  license: see-repo
+  local_capable: false
+  maturity: stable
+  name: Context7
+  pros:
+  - cuts wrong/outdated code suggestions
+  - simple MCP add
+  purpose: MCP server providing up-to-date library docs to coding agents
+  review_status: seed-unverified
+  tags:
+  - mcp
+  - docs
+  - coding-agent
+  type: mcp
+  id: context7
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVF80015BCPP05T
+- abilities:
+  - markdown extraction
+  - LLM-guided structured extraction
+  - session/auth reuse
+  - concurrent crawling
+  - chunking for RAG
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: tool
+  cons:
+  - you own the browser infrastructure and the anti-bot fight
+  - less polished than a hosted API
+  - needs per-site tuning
+  cost: free
+  data_residency: local
+  domains:
+  - scraping
+  - crawler
+  - rag
+  - local-first
+  - python
+  - gdpr-safe
+  install: pip install -U crawl4ai && crawl4ai-setup
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Crawl4AI
+  pros:
+  - Apache-2.0 is clean for commercial use
+  - runs entirely local with no API key and no third party
+  - fast concurrent crawls
+  - actively maintained
+  published_score: 78655 GitHub stars (2026-08-19)
+  purpose: Local-first LLM-friendly web crawler and scraper (Playwright-based)
+  repo: https://github.com/unclecode/crawl4ai
+  review_status: verified
+  tags:
+  - scraping
+  - crawler
+  - rag
+  - local-first
+  - python
+  - gdpr-safe
+  type: script
+  id: crawl4ai
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZ60028ABRZ9WB
+  - 0000003831QWVFJ002F389A33J
+- abilities:
+  - role/agent definitions
+  - task delegation
+  - quick multi-agent prototypes
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - less control than LangGraph for complex state
+  cost: metered
+  data_residency: hybrid
+  domains:
+  - multi-agent
+  - prototyping
+  - python
+  install: pip install crewai
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: CrewAI
+  pros:
+  - intuitive mental model
+  - fast prototyping
+  published_score: 57299 GitHub stars (2026-08-19)
+  purpose: Role-based multi-agent framework; fast to stand up "crews"
+  repo: https://github.com/crewAIInc/crewAI
+  review_status: verified
+  tags:
+  - multi-agent
+  - prototyping
+  - python
+  type: script
+  id: crewai
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVYG000D1BMEXC4
+  - 0000003831QWVZC002313T9PKC
+  - 0000003831QWVEW002DC84TG4G
+- abilities:
+  - step-by-step reasoning
+  - math
+  - code reasoning
+  - self-check
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: model
+  cons:
+  - emits long reasoning traces — slower wall-clock and more output tokens per answer
+  cost: free
+  data_residency: local
+  domains:
+  - open-weight
+  - reasoning
+  - rtx-2000-ada
+  - fits-16gb
+  homepage: https://huggingface.co/deepseek-ai
+  install: ollama run deepseek-r1:14b
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: DeepSeek-R1 14B (distill)
+  pros:
+  - 8.37GB
+  - MIT license
+  - strong on problems needing deliberation
+  purpose: Chain-of-thought reasoning distill; thinks before answering
+  review_status: verified
+  tags:
+  - open-weight
+  - reasoning
+  - rtx-2000-ada
+  - fits-16gb
+  type: model
+  id: deepseek-r1-14b
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEP001M01XVAC1
+- abilities:
+  - step-by-step reasoning
+  - coding
+  - math
+  - distills run on single GPU
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: model
+  cons:
+  - flagship is large
+  - license/version varies by release
+  cost: free
+  cost_notes: free weights; very low-cost hosted API
+  data_residency: local
+  domains:
+  - open-weight
+  - reasoning
+  - coding
+  - distill
+  homepage: https://huggingface.co/deepseek-ai
+  install: ollama run deepseek-r1  (distill)  ||  hosted API
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: DeepSeek V4 (+ R reasoning line)
+  pros:
+  - excellent reasoning
+  - cheap hosted API
+  - distilled variants for modest hardware
+  published_score: Top-tier reasoning across 2026 open leaderboards
+  purpose: Strong open reasoning/coding models with distilled small variants
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - reasoning
+  - coding
+  - distill
+  type: model
+  id: deepseek-v4
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEE000GBDH6AH1
+- abilities:
+  - explore codebases
+  - multi-file edits
+  - bug fixing
+  - tool use
+  - runs locally
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - narrow — coding agents
+  - not general chat
+  cost: free
+  data_residency: local
+  domains:
+  - open-weight
+  - coding-agent
+  - private-repo
+  homepage: https://huggingface.co/mistralai
+  install: ollama run devstral
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Devstral (Mistral + All Hands)
+  pros:
+  - Apache-2.0
+  - private-repo friendly
+  - 24B fits one strong GPU
+  - agent-focused
+  purpose: Apache-2.0 model purpose-built for agentic software engineering
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - coding-agent
+  - private-repo
+  type: model
+  id: devstral
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEG0003BDPAVWQ
+- abilities:
+  - single-page scrape
+  - whole-site crawl
+  - JS rendering
+  - markdown/JSON output
+  - structured extraction
+  - official MCP server
+  agent_ready: true
+  auth: api-key
+  autonomy: 5
+  category: api
+  cons:
+  - AGPL-3.0 copyleft blocks closed-source commercial embedding
+  - cloud tier sends target URLs and scraped content to a third party
+  - self-hosting is materially more work than the API
+  cost: metered
+  cost_notes: Free tier of credits; paid per-credit beyond it. Self-hosting is free
+    but AGPL obligations apply.
+  data_residency: hybrid
+  domains:
+  - scraping
+  - crawler
+  - rag
+  - mcp
+  - api
+  - copyleft
+  install: 'API: npm i @mendable/firecrawl-js (FIRECRAWL_API_KEY)  ||  self-host:
+    docker compose up from the repo'
+  license: AGPL-3.0
+  local_capable: true
+  maturity: stable
+  name: Firecrawl
+  pros:
+  - handles JS and anti-bot for you
+  - clean markdown out of the box
+  - MCP server means agents call it directly
+  - self-hostable
+  published_score: 169312 GitHub stars (2026-08-19)
+  purpose: Crawl/scrape service that returns LLM-ready markdown from any site
+  repo: https://github.com/firecrawl/firecrawl
+  review_status: verified
+  tags:
+  - scraping
+  - crawler
+  - rag
+  - mcp
+  - api
+  - copyleft
+  type: mcp
+  id: firecrawl
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZ6001WF12GXQ5
+  - 0000003831QWVYE0019WWXS5M9
+  - 0000003831QWVFJ000HTP741SK
+- agent_ready: false
+  auth: local-path
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - cad
+  - 3d-print
+  entrypoint: freecadcmd script.py
+  install: conda install -c conda-forge freecad  (or apt install freecad)
+  license: LGPL-2.1
+  local_capable: true
+  name: freecad-headless
+  notes: NOT YET VERIFIED. Sandbox has no FreeCAD and the 3dModel path is Windows-only.
+    See gaps.md G-001.
+  purpose: Scriptable parametric CAD - build/modify models without GUI
+  review_status: seed-unverified
+  type: script
+  id: freecad-headless
+  last_reviewed: '2026-09-02'
+  my_score_current: 0
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKJ002YAEPMTT2
+- abilities:
+  - text generation
+  - tool/function calling
+  - multimodal input (image/audio/video/PDF)
+  - long context
+  - structured JSON output
+  - batch
+  - streaming
+  agent_ready: true
+  auth: api-key
+  autonomy: 5
+  category: api
+  cons:
+  - cloud only (data leaves machine)
+  - model names churn fast
+  - free tier has rate limits and may be used for training
+  cost: metered
+  cost_notes: free tier via AI Studio key (rate-limited); paid per-token beyond it
+    — see current pricing
+  data_residency: cloud
+  domains:
+  - api
+  - frontier
+  - multimodal
+  - long-context
+  - translation
+  - byok
+  homepage: https://ai.google.dev/gemini-api/docs
+  install: pip install google-genai  ||  npm i @google/genai   (GEMINI_API_KEY from
+    https://aistudio.google.com/apikey)
+  license: proprietary
+  local_capable: false
+  maturity: stable
+  name: Google Gemini API
+  pros:
+  - free tier via AI Studio
+  - cheap Flash tier for high-volume jobs
+  - very long context
+  - official Python + JS SDKs
+  purpose: Google's Gemini models via API; long context, multimodal, generous free
+    tier
+  review_status: verified
+  tags:
+  - api
+  - frontier
+  - multimodal
+  - long-context
+  - translation
+  - byok
+  type: model
+  id: gemini-api
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVYC001BBFEPAF7
+  - 0000003831QWVYC002MMZKPKH7
+  - 0000003831QWVFE00097H4SGMZ
+- abilities:
+  - chat
+  - reasoning
+  - coding
+  - 27B runs on one GPU
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - Gemma license terms
+  - below frontier on hard reasoning
+  cost: free
+  data_residency: local
+  domains:
+  - open-weight
+  - small
+  - efficient
+  homepage: https://huggingface.co/google
+  install: ollama run gemma3
+  license: Gemma-license
+  local_capable: true
+  maturity: stable
+  name: Gemma 3 (Google)
+  pros:
+  - hardware-friendly
+  - good quality-per-VRAM
+  - you've run it via Ollama
+  purpose: Efficient small/mid open models; single-GPU friendly
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - small
+  - efficient
+  type: model
+  id: gemma3
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEG002HFXXBVZ7
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - vcs
+  - workflow
+  entrypoint: 'bash: git'
+  install: preinstalled
+  license: GPL-2.0
+  local_capable: true
+  name: git
+  notes: 'Branch: development for general, [project-name] for project work. Always
+    check branch first.'
+  purpose: Version control - branch discipline and prefixed commits
+  review_status: verified
+  type: script
+  verified: '2026-08-13'
+  id: git
+  last_reviewed: '2026-09-02'
+  my_score_current: 10
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKG001RDQGE7AV
+- abilities:
+  - agentic coding
+  - long-horizon tool use
+  - 1M context
+  - reasoning
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: model
+  cons:
+  - 754B MoE — needs strong GPUs or hosted inference
+  - heavy local footprint
+  cost: free
+  cost_notes: free weights; large infra or hosted API
+  data_residency: local
+  domains:
+  - open-weight
+  - coding
+  - agentic
+  - long-context
+  homepage: https://huggingface.co/zai-org
+  install: via hosted inference (OpenRouter/Fireworks) or self-host on multi-GPU
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: GLM-5.2 (Z.ai)
+  pros:
+  - MIT (no commercial restriction)
+  - leading open agentic-coding scores
+  - long context
+  published_score: LiveBench Coding ~79.65 / Agentic Coding ~73.33 (Jun 2026)
+  purpose: Top open-weight coding/agentic model as of mid-2026, MIT-licensed
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - coding
+  - agentic
+  - long-context
+  type: model
+  id: glm-5-2
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEC000STSPJB7B
+- abilities:
+  - reasoning
+  - coding
+  - tool-calling
+  - long context
+  - agent use
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - MoE quality uneven vs dense peers on some tasks
+  cost: free
+  cost_notes: free weights; self-host compute
+  data_residency: local
+  domains:
+  - open-weight
+  - moe
+  - long-context
+  - rtx-2000-ada
+  - fits-16gb
+  homepage: https://huggingface.co/openai
+  install: ollama run gpt-oss:20b
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: gpt-oss 20B (OpenAI)
+  pros:
+  - 128K context on a 16GB card
+  - MoE so active params stay small
+  - Apache-2.0
+  - strong tool-calling
+  purpose: OpenAI open-weight MoE; native MXFP4, 128K context, fits 16GB with KV headroom
+  review_status: verified
+  tags:
+  - open-weight
+  - moe
+  - long-context
+  - rtx-2000-ada
+  - fits-16gb
+  type: model
+  id: gpt-oss-20b
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEJ0026NZ55ANP
+- agent_ready: true
+  auth: local-path
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - cad
+  - 3d-print
+  entrypoint: ${profiles.amit.paths.cad_source}
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: kb-3dmodel-source
+  notes: NOT reachable from the Linux sandbox - only via Windows-side file tools.
+    Confirm before delegating.
+  purpose: FreeCAD and 3MF source files for all physical projects
+  review_status: seed-unverified
+  type: kb
+  id: kb-3dmodel-source
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKR001AE6CK8PH
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - meta
+  - workflow
+  entrypoint: LLM/
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: kb-llm-instructions
+  notes: Role prompt files referenced by the subagent entrypoints above live in LLM/roles/.
+  purpose: Internal instructions, workflows, role prompts (English)
+  review_status: verified
+  type: kb
+  verified: '2026-08-13'
+  id: kb-llm-instructions
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKT000RMD7ST1W
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - meta
+  - project-management
+  entrypoint: projects/README.md + projects/<name>.md
+  install: n-a
+  license: n-a
+  local_capable: true
+  name: kb-projects-registry
+  notes: Project name here IS the git branch name. Keep them identical.
+  purpose: Per-project status, milestones, blockers, decisions, deliverables
+  review_status: verified
+  type: kb
+  verified: '2026-08-13'
+  id: kb-projects-registry
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKW000AZ6M9NY4
+- abilities:
+  - visual flow editor
+  - component library
+  - deploy a flow as a REST endpoint
+  - MCP server exposure
+  - local or Docker deploy
+  agent_ready: true
+  auth: none
+  autonomy: 3
+  category: agent-framework
+  cons:
+  - GUI-first — the visual layer is the point and does not version-control cleanly
+  - generated flows are harder to review than code
+  - heavier runtime than a plain script
+  cost: metered
+  cost_notes: OSS self-hosted is free; a managed tier is offered separately.
+  data_residency: local
+  domains:
+  - visual-builder
+  - workflow
+  - low-code
+  - docker
+  - prototyping
+  install: docker run -p 7860:7860 langflowai/langflow:latest  ||  uv pip install
+    langflow
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Langflow
+  pros:
+  - fastest way to sketch a pipeline
+  - MIT
+  - self-hostable in Docker on the OptiPlex
+  - flows become callable APIs
+  published_score: 153451 GitHub stars (2026-08-19)
+  purpose: Visual drag-and-drop builder for LLM/agent workflows, exportable as an
+    API
+  repo: https://github.com/langflow-ai/langflow
+  review_status: verified
+  tags:
+  - visual-builder
+  - workflow
+  - low-code
+  - docker
+  - prototyping
+  type: script
+  id: langflow
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZA0009F290CEH
+  - 0000003831QWVYG002SSTR0WC1
+  - 0000003831QWVFP001PQHH2EVJ
+- abilities:
+  - trace agent runs
+  - prompt mgmt
+  - evals
+  - cost/latency analytics
+  - self-host
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-infra
+  cons:
+  - adds infra to run/maintain
+  cost: metered
+  cost_notes: OSS self-host free; cloud tiers paid
+  data_residency: local
+  domains:
+  - observability
+  - evals
+  - self-host
+  install: docker compose up  (self-host)  ||  pip install langfuse  (SDK)
+  license: NOASSERTION
+  license_notes: GitHub reports no single SPDX licence — the core is MIT but an /ee
+    enterprise directory carries separate commercial terms. Per CLAUDE.md §6, check
+    the licence of the specific directory before any commercial deployment.
+  local_capable: true
+  maturity: stable
+  name: Langfuse
+  pros:
+  - self-hostable (data stays local)
+  - framework-agnostic
+  - good for debugging agents
+  published_score: 33368 GitHub stars (2026-08-19)
+  purpose: Open-source LLM observability, tracing, and evals
+  repo: https://github.com/langfuse/langfuse
+  review_status: verified
+  tags:
+  - observability
+  - evals
+  - self-host
+  type: script
+  id: langfuse
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZE001YYFFPNAN
+  - 0000003831QWVF600183XDY0GG
+- abilities:
+  - graph-based orchestration
+  - state/memory
+  - 1000+ integrations
+  - model-swap
+  - observability via LangSmith
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - API churn
+  - can be heavy/abstract for simple loops
+  cost: metered
+  cost_notes: OSS framework free; LangSmith/Platform paid tiers
+  data_residency: hybrid
+  domains:
+  - orchestration
+  - python
+  - multi-agent
+  homepage: https://www.langchain.com
+  install: pip install langgraph langchain
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: LangGraph / LangChain
+  pros:
+  - huge ecosystem
+  - production-proven
+  - provider-agnostic
+  published_score: LangChain ~134k GitHub stars
+  purpose: Most-adopted ecosystem for stateful, controllable multi-agent apps
+  repo: https://github.com/langchain-ai/langgraph
+  review_status: seed-unverified
+  tags:
+  - orchestration
+  - python
+  - multi-agent
+  type: script
+  id: langgraph
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVER0003B8R35V6
+- abilities:
+  - GGUF inference
+  - CPU+GPU offload
+  - tiny footprint
+  - server mode
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: runtime
+  cons:
+  - lower-level
+  - manual model/quant management
+  cost: free
+  data_residency: local
+  domains:
+  - local
+  - cpp
+  - gguf
+  - edge
+  homepage: https://github.com/ggml-org/llama.cpp
+  install: git clone https://github.com/ggml-org/llama.cpp && make
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: llama.cpp
+  pros:
+  - runs on modest hardware
+  - C/C++ (your wheelhouse)
+  - embeddable
+  published_score: 124624 GitHub stars (2026-08-19)
+  purpose: C/C++ inference engine; GGUF, CPU/GPU, runs almost anywhere
+  repo: https://github.com/ggml-org/llama.cpp
+  review_status: verified
+  tags:
+  - local
+  - cpp
+  - gguf
+  - edge
+  type: script
+  id: llama-cpp
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVE60002X8JW711
+- abilities:
+  - model browser
+  - chat GUI
+  - local OpenAI-compatible server
+  agent_ready: true
+  auth: none
+  autonomy: 3
+  category: runtime
+  cons:
+  - GUI-first
+  - less scriptable
+  - closed-source app
+  cost: free
+  data_residency: local
+  domains:
+  - local
+  - gui
+  - desktop
+  homepage: https://lmstudio.ai
+  install: download desktop app from lmstudio.ai
+  license: proprietary-freeware
+  local_capable: true
+  maturity: stable
+  name: LM Studio
+  pros:
+  - easiest for browsing/testing models
+  - nice UX
+  purpose: Desktop GUI for downloading/running local models, with local server
+  review_status: seed-unverified
+  tags:
+  - local
+  - gui
+  - desktop
+  type: script
+  id: lm-studio
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVE8000RY5H0CDB
+- abilities:
+  - OpenAI-compatible REST API
+  - text/image/audio/embeddings from one server
+  - GGUF and other backends
+  - runs without a GPU
+  - model gallery
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: runtime
+  cons:
+  - heavier and fiddlier to configure than Ollama
+  - CPU inference is slow for large models
+  - broad surface means more moving parts to break
+  cost: free
+  data_residency: local
+  domains:
+  - runtime
+  - openai-compatible
+  - self-hosted
+  - docker
+  - multimodal
+  - cpu
+  install: docker run -p 8080:8080 localai/localai:latest-cpu
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: LocalAI
+  pros:
+  - MIT
+  - one endpoint for far more than text (TTS
+  - STT
+  - image gen) where Ollama is text/vision-first
+  - drop-in for any OpenAI SDK client
+  - Docker-native
+  published_score: 48567 GitHub stars (2026-08-19)
+  purpose: Self-hosted drop-in replacement for the OpenAI API — CPU-capable, multi-modal
+  repo: https://github.com/mudler/LocalAI
+  review_status: verified
+  tags:
+  - runtime
+  - openai-compatible
+  - self-hosted
+  - docker
+  - multimodal
+  - cpu
+  type: script
+  id: localai
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZA001SFKZSG8G
+  - 0000003831QWVYJ0011CB3YX4R
+  - 0000003831QWVFR0018VMGKK1M
+- abilities:
+  - standardized tool/resource interface
+  - client-server
+  - discovery via registry
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: mcp
+  cons:
+  - security surface — vet servers and creds (2026 disclosure hit 200k+ servers)
+  cost: free
+  data_residency: hybrid
+  domains:
+  - protocol
+  - tools
+  - registry
+  - security-sensitive
+  homepage: https://modelcontextprotocol.io
+  install: build servers with FastMCP / official SDKs; discover via registry.modelcontextprotocol.io
+  license: open-spec
+  local_capable: true
+  maturity: stable
+  name: Model Context Protocol (MCP) + Official Registry
+  pros:
+  - vendor-neutral
+  - central to your agent workflow
+  - growing server ecosystem
+  purpose: Open standard + registry for connecting agents to tools/data
+  review_status: seed-unverified
+  tags:
+  - protocol
+  - tools
+  - registry
+  - security-sensitive
+  type: mcp
+  id: mcp
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVF40008JE7V9ZN
+- agent_ready: true
+  auth: none
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - web
+  - automation
+  entrypoint: mcp__claude-in-chrome__navigate + get_page_text
+  install: Claude in Chrome extension
+  license: proprietary
+  local_capable: false
+  name: mcp-chrome
+  notes: Fallback ONLY when no dedicated MCP exists. Also the fix when web_fetch returns
+    a JS shell.
+  purpose: DOM-aware browser automation - navigate, read, fill forms, debug
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-chrome
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKA000S2HMCVZJ
+- agent_ready: true
+  auth: none
+  category: mcp
+  cost: free
+  data_residency: local
+  domains:
+  - desktop
+  - automation
+  entrypoint: mcp__computer-use__request_access then screenshot / left_click / type
+  install: built in
+  license: proprietary
+  local_capable: true
+  name: mcp-computer-use
+  notes: Last resort - slow and brittle. Required for FreeCAD GUI. Browsers are read-tier,
+    IDEs are click-tier.
+  purpose: Screenshot and control native desktop apps
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-computer-use
+  last_reviewed: '2026-09-02'
+  my_score_current: 5
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKA002ZSRPD4SF
+- agent_ready: true
+  auth: oauth
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - email
+  - communication
+  entrypoint: mcp__2e1fff26-*__search_threads / get_message / create_draft
+  install: connected via Claude connectors
+  license: proprietary
+  local_capable: false
+  name: mcp-gmail
+  notes: Drafts only - never auto-send. Treat links in mail as untrusted.
+  purpose: Read, search, label, draft and manage Gmail threads
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-gmail
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVK20018HFPJR0M
+- agent_ready: true
+  auth: oauth
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - calendar
+  - scheduling
+  entrypoint: mcp__67df41de-*__list_events / suggest_time / create_event
+  install: connected via Claude connectors
+  license: proprietary
+  local_capable: false
+  name: mcp-google-calendar
+  notes: suggest_time is the right tool for scheduling - do not compute slots manually.
+  purpose: List, search, create and update calendar events; find free slots
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-google-calendar
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVK4001WNBADPNX
+- agent_ready: true
+  auth: oauth
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - files
+  - storage
+  entrypoint: mcp__7c80295c-*__search_files / read_file_content
+  install: connected via Claude connectors
+  license: proprietary
+  local_capable: false
+  name: mcp-google-drive
+  notes: Prefer over browser automation for anything Drive-hosted.
+  purpose: Search, read, create and copy files in Google Drive
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-google-drive
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVK8000XVT36K34
+- agent_ready: true
+  auth: api-key
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - api
+  - testing
+  - integration
+  entrypoint: mcp__7662347f-*__getCollections / createCollection / createMock
+  install: connected via Claude connectors
+  license: proprietary
+  local_capable: false
+  name: mcp-postman
+  notes: Read the server instructions resource before answering API questions.
+  purpose: Manage API collections, environments, mocks and OpenAPI specs
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-postman
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVK80026HD4KY0W
+- agent_ready: true
+  auth: none
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - meta
+  - tooling
+  entrypoint: mcp__mcp-registry__search_mcp_registry
+  install: built in
+  license: proprietary
+  local_capable: false
+  name: mcp-registry-search
+  notes: MANDATORY step before logging an MCP gap in gaps.md.
+  purpose: Find and suggest connectors that are not yet installed
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-registry-search
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKE000RS823TGE
+- agent_ready: true
+  auth: none
+  category: mcp
+  cost: free
+  data_residency: cloud
+  domains:
+  - automation
+  entrypoint: mcp__scheduled-tasks__create_scheduled_task
+  install: built in
+  license: proprietary
+  local_capable: false
+  name: mcp-scheduled-tasks
+  notes: Raw tool. Prefer skill-schedule as the wrapper.
+  purpose: Create, list, update and delete scheduled runs
+  review_status: verified
+  type: mcp
+  verified: '2026-08-13'
+  id: mcp-scheduled-tasks
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKE002K46F15G3
+- abilities:
+  - persistent agent memory
+  - retrieval
+  - leads LoCoMo memory benchmark
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-infra
+  cons:
+  - top accuracy config is resource-heavy per conversation
+  cost: metered
+  data_residency: hybrid
+  domains:
+  - memory
+  - agent-infra
+  install: pip install mem0ai
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Mem0
+  pros:
+  - strong recall quality
+  - drop-in memory for agents
+  published_score: 63576 GitHub stars (2026-08-19); leads LoCoMo long-conversation
+    memory benchmark
+  purpose: Memory layer for agents (long-conversation/state recall)
+  repo: https://github.com/mem0ai/mem0
+  review_status: verified
+  tags:
+  - memory
+  - agent-infra
+  type: script
+  id: mem0
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVYE002NQ9EHRRH
+  - 0000003831QWVZC0015255NHRA
+  - 0000003831QWVF4002Q4ZQZRCZ
+- abilities:
+  - graph workflows
+  - multi-agent
+  - .NET runtime
+  - Azure AI Foundry guardrails
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - most value inside Microsoft/Azure ecosystem
+  cost: free
+  cost_notes: OSS framework; Azure services billed separately
+  data_residency: hybrid
+  domains:
+  - dotnet
+  - csharp
+  - enterprise
+  - azure
+  homepage: https://learn.microsoft.com/agent-framework
+  install: dotnet add package Microsoft.Agents.*   (also pip for Python)
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Microsoft Agent Framework
+  pros:
+  - first-class .NET (your stack)
+  - enterprise governance
+  - Azure integration
+  purpose: Unified successor to AutoGen + Semantic Kernel; Python + .NET, GA
+  review_status: seed-unverified
+  tags:
+  - dotnet
+  - csharp
+  - enterprise
+  - azure
+  type: script
+  id: ms-agent-framework
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVER002SXE1PGYY
+- abilities:
+  - run open models locally
+  - auto quantization + hardware detection
+  - OpenAI-compatible HTTP endpoint
+  - model pull/serve
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: runtime
+  cons:
+  - less throughput than vLLM at scale
+  - limited fine-grained serving control
+  cost: free
+  cost_notes: free software; cost is your own compute/GPU
+  data_residency: local
+  domains:
+  - local
+  - inference
+  - gpu
+  - rtx-pro-2000
+  homepage: https://ollama.com
+  install: winget install Ollama.Ollama  ||  curl -fsSL https://ollama.com/install.sh
+    | sh
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Ollama
+  pros:
+  - trivial setup
+  - great for agents via API
+  - huge model coverage
+  - fully offline
+  purpose: One-command local LLM runtime with OpenAI-compatible API
+  repo: https://github.com/ollama/ollama
+  review_status: seed-unverified
+  tags:
+  - local
+  - inference
+  - gpu
+  - rtx-pro-2000
+  type: script
+  id: ollama
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVE0000ZFBHB0QA
+- abilities:
+  - end-to-end tasks
+  - browse + code + run
+  - sandboxed execution
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: coding-agent
+  cons:
+  - resource-heavy
+  - supervise on important repos
+  cost: free
+  data_residency: local
+  domains:
+  - autonomous
+  - coding-agent
+  - docker
+  install: 'docker run ... (see repo) '
+  license: MIT
+  local_capable: true
+  maturity: beta
+  name: OpenHands
+  pros:
+  - genuinely autonomous
+  - self-hostable
+  - active project
+  published_score: 84452 GitHub stars (2026-08-19)
+  purpose: Open-source autonomous software-engineering agent (ex-OpenDevin)
+  repo: https://github.com/OpenHands/OpenHands
+  review_status: verified
+  tags:
+  - autonomous
+  - coding-agent
+  - docker
+  type: script
+  id: openhands
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVF2001WY8C0DRQ
+- abilities:
+  - single endpoint to 100s of models
+  - routing
+  - fallbacks
+  - OpenAI-compatible
+  agent_ready: true
+  auth: api-key
+  autonomy: 5
+  category: gateway
+  cons:
+  - marginal latency vs direct
+  - still cloud
+  cost: paid
+  cost_notes: pass-through per-token + small fee; free tier on some models
+  data_residency: cloud
+  domains:
+  - gateway
+  - multi-model
+  - evaluation
+  homepage: https://openrouter.ai
+  install: OpenAI-compatible base_url = https://openrouter.ai/api/v1
+  license: proprietary
+  local_capable: false
+  maturity: stable
+  name: OpenRouter
+  pros:
+  - test GLM/Kimi/DeepSeek/Llama without per-vendor accounts
+  - easy model A/B
+  purpose: One API across many model providers (open + closed), pay-per-use
+  review_status: seed-unverified
+  tags:
+  - gateway
+  - multi-model
+  - evaluation
+  type: script
+  id: openrouter
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVFC00000VVAEG1
+- abilities:
+  - on-device inference
+  - 128K context on mini
+  - structured tasks
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - not for hard reasoning/coding at frontier
+  cost: free
+  data_residency: local
+  domains:
+  - open-weight
+  - on-device
+  - small
+  - mit
+  homepage: https://huggingface.co/microsoft
+  install: ollama run phi4
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Phi-4 (Microsoft)
+  pros:
+  - MIT
+  - runs without a GPU
+  - great for edge/prototyping
+  purpose: Small, fast, on-device models (incl. ~3.8B mini) with long context
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - on-device
+  - small
+  - mit
+  type: model
+  id: phi-4
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEJ000137QVX4P
+- abilities:
+  - typed agents
+  - dependency injection
+  - structured outputs
+  - tool calling
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - less opinionated on multi-agent orchestration than CrewAI
+  cost: free
+  data_residency: hybrid
+  domains:
+  - python
+  - typed
+  - production
+  install: pip install pydantic-ai
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Pydantic AI
+  pros:
+  - predictable IO
+  - clean for production Python
+  - low magic
+  published_score: 19382 GitHub stars (2026-08-19)
+  purpose: Type-safe, FastAPI-style agent framework (strict types, DI, structured
+    IO)
+  repo: https://github.com/pydantic/pydantic-ai
+  review_status: verified
+  tags:
+  - python
+  - typed
+  - production
+  type: script
+  id: pydantic-ai
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEW000XRMA021A
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: local
+  domains:
+  - compute
+  - data
+  entrypoint: 'bash: python3'
+  install: preinstalled in sandbox
+  license: PSF-2.0
+  local_capable: true
+  name: python3
+  notes: pip needs --break-system-packages. PyYAML confirmed available.
+  purpose: General computation, data processing, file generation, validation
+  review_status: verified
+  type: script
+  verified: '2026-08-13'
+  id: python3
+  last_reviewed: '2026-09-02'
+  my_score_current: 10
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKJ000XMJ67SYV
+- abilities:
+  - code generation
+  - completion
+  - refactoring
+  - tool-calling
+  - fill-in-middle
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - superseded on raw benchmarks by newer 24B+ coders
+  cost: free
+  data_residency: local
+  domains:
+  - open-weight
+  - coding
+  - rtx-2000-ada
+  - fits-16gb
+  - installed
+  homepage: https://huggingface.co/Qwen
+  install: ollama run qwen2.5-coder:14b
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Qwen2.5-Coder 14B
+  pros:
+  - 8.37GB leaves wide KV headroom
+  - proven on this GPU
+  - Apache-2.0
+  purpose: Dense coding model; the current local default on this workstation
+  review_status: verified
+  tags:
+  - open-weight
+  - coding
+  - rtx-2000-ada
+  - fits-16gb
+  - installed
+  type: model
+  id: qwen25-coder-14b
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEM0015W2RW2SN
+- abilities:
+  - reasoning
+  - coding
+  - multilingual
+  - tool-calling
+  - agent use
+  - vision variants
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: model
+  cons:
+  - largest variants need serious VRAM
+  cost: free
+  cost_notes: free weights; self-host compute
+  data_residency: local
+  domains:
+  - open-weight
+  - default
+  - multilingual
+  - agent
+  homepage: https://huggingface.co/Qwen
+  install: ollama run qwen3
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: Qwen3 (Alibaba)
+  pros:
+  - Apache-2.0 unrestricted
+  - broad benchmark strength
+  - great Ollama support
+  - range of sizes
+  published_score: Leads broad open benchmarks (multiple 2026 leaderboards)
+  purpose: Strong general-purpose open-weight family; common 2026 local default
+  review_status: seed-unverified
+  tags:
+  - open-weight
+  - default
+  - multilingual
+  - agent
+  type: model
+  id: qwen3
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVEA0016EGJHHJR
+- abilities:
+  - layout-aware parsing of PDF/DOCX/slides/tables
+  - chunking with visual grounding
+  - citation-backed answers
+  - knowledge-base UI
+  - REST API
+  agent_ready: true
+  auth: none
+  autonomy: 3
+  category: agent-infra
+  cons:
+  - heavy Docker stack (Elasticsearch/Infinity plus MinIO and Redis) costing real
+    RAM and disk on the OptiPlex
+  - opinionated pipeline is harder to bend than a DIY chain
+  - GUI-centric setup before the API is useful
+  cost: free
+  data_residency: local
+  domains:
+  - rag
+  - document-parsing
+  - self-hosted
+  - docker
+  - gdpr-safe
+  install: git clone https://github.com/infiniflow/ragflow && cd ragflow/docker &&
+    docker compose up -d
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: RAGFlow
+  pros:
+  - Apache-2.0
+  - strong parsing of messy real documents including tables and scanned layouts
+  - self-hosted so documents never leave the box
+  - citations back to source spans
+  published_score: 88807 GitHub stars (2026-08-19)
+  purpose: Deep-document-understanding RAG engine with an agent layer
+  repo: https://github.com/infiniflow/ragflow
+  review_status: verified
+  tags:
+  - rag
+  - document-parsing
+  - self-hosted
+  - docker
+  - gdpr-safe
+  type: script
+  id: ragflow
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVZA0029K6KGBA3
+  - 0000003831QWVYM000AT3KDK0K
+  - 0000003831QWVFT001MZYE42ED
+- abilities:
+  - plugins/functions
+  - planners
+  - memory
+  - .NET-native
+  agent_ready: true
+  auth: none
+  autonomy: 4
+  category: agent-framework
+  cons:
+  - converging into Microsoft Agent Framework — check migration path
+  cost: free
+  data_residency: hybrid
+  domains:
+  - dotnet
+  - csharp
+  - sdk
+  homepage: https://learn.microsoft.com/semantic-kernel
+  install: dotnet add package Microsoft.SemanticKernel
+  license: MIT
+  local_capable: true
+  maturity: stable
+  name: Semantic Kernel
+  pros:
+  - mature .NET integration
+  - good for embedding AI in existing services
+  purpose: Microsoft SDK to add AI orchestration to .NET (and Python) apps
+  review_status: seed-unverified
+  tags:
+  - dotnet
+  - csharp
+  - sdk
+  type: script
+  id: semantic-kernel
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVET001N8XAJEHW
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - design
+  - visual
+  entrypoint: Skill(skill='anthropic-skills:canvas-design')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-canvas-design
+  notes: Original designs only - never reproduce an existing artist's work.
+  purpose: Visual art / posters / static design output as PNG or PDF
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-canvas-design
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJW001PPW37K9K
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - documents
+  - deliverables
+  entrypoint: Skill(skill='anthropic-skills:docx')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-docx
+  notes: Use for inbox/ deliverables needing Hebrew RTL. Read SKILL.md only AFTER
+    research is done.
+  purpose: Create/read/edit Word documents with real formatting, TOC, headings
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-docx
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJJ001CC9154X8
+- agent_ready: false
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - validation
+  - planning
+  entrypoint: Skill(skill='anthropic-skills:grill-me')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-grill-me
+  notes: agent_ready=false - it is interactive and needs the human in the loop.
+  purpose: Adversarial interview to stress-test a plan or decision before committing
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-grill-me
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJY002QR72DJ16
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - tooling
+  - integration
+  entrypoint: Skill(skill='anthropic-skills:mcp-builder')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-mcp-builder
+  notes: This is the escalation path when gaps.md shows a recurring MCP gap.
+  purpose: Build a new MCP server when no connector exists for a needed service
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-mcp-builder
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJR001PDPXPHEA
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - documents
+  entrypoint: Skill(skill='anthropic-skills:pdf')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-pdf
+  notes: Do not use pypdf directly - the skill wraps a better toolchain.
+  purpose: Read, extract, merge, split, fill forms, OCR on PDFs
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-pdf
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJP0012KEC34CJ
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - documents
+  - presentation
+  entrypoint: Skill(skill='anthropic-skills:pptx')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-pptx
+  notes: Also the correct tool for merely READING a .pptx.
+  purpose: Create/read/edit slide decks and templates
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-pptx
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJM0028NT4Z1EZ
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: cloud
+  domains:
+  - automation
+  entrypoint: Skill(skill='anthropic-skills:schedule')
+  install: n-a
+  license: proprietary
+  local_capable: false
+  name: skill-schedule
+  notes: Wraps mcp__scheduled-tasks__*. Use the skill, not the raw tool, for cron
+    syntax.
+  purpose: Set up recurring or deferred automated runs
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-schedule
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVK0001TZ38GJV9
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - tooling
+  - meta
+  entrypoint: Skill(skill='anthropic-skills:skill-creator')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-skill-creator
+  notes: Escalation path when a procedure has been repeated 3+ times manually.
+  purpose: Create, edit and eval skills
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-skill-creator
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJT000AX111WPK
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - design
+  - branding
+  entrypoint: Skill(skill='anthropic-skills:theme-factory')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-theme-factory
+  notes: Chain after a document skill, not instead of it.
+  purpose: Apply a consistent visual theme across artifacts, slides and docs
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-theme-factory
+  last_reviewed: '2026-09-02'
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJY00010JCYRB2
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - ui
+  - artifacts
+  entrypoint: Skill(skill='anthropic-skills:web-artifacts-builder')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-web-artifacts-builder
+  notes: Overkill for single-file artifacts - write those directly.
+  purpose: Multi-component HTML artifacts with React/Tailwind/shadcn
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-web-artifacts-builder
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJT0029B6K45ES
+- agent_ready: true
+  auth: none
+  category: skill
+  cost: included
+  data_residency: local
+  domains:
+  - documents
+  - data
+  entrypoint: Skill(skill='anthropic-skills:xlsx')
+  install: n-a
+  license: proprietary
+  local_capable: true
+  name: skill-xlsx
+  notes: Trigger only when a spreadsheet is the deliverable, not merely the input.
+  purpose: Create/read/edit spreadsheets, formulas, charts, clean messy tabular data
+  review_status: verified
+  type: skill
+  verified: '2026-08-13'
+  id: skill-xlsx
+  last_reviewed: '2026-09-02'
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVJM000ZRV0933N
+- abilities:
+  - paged-attention serving
+  - OpenAI-compatible API
+  - batching
+  - tensor parallel
+  agent_ready: true
+  auth: none
+  autonomy: 5
+  category: runtime
+  cons:
+  - heavier setup
+  - GPU-hungry
+  - more ops than Ollama
+  cost: free
+  cost_notes: free software; serious GPU expected
+  data_residency: local
+  domains:
+  - serving
+  - production
+  - gpu
+  homepage: https://docs.vllm.ai
+  install: pip install vllm
+  license: Apache-2.0
+  local_capable: true
+  maturity: stable
+  name: vLLM
+  pros:
+  - best throughput/latency at scale
+  - production-grade
+  - OpenAI API
+  purpose: High-throughput production inference server for open models
+  repo: https://github.com/vllm-project/vllm
+  review_status: seed-unverified
+  tags:
+  - serving
+  - production
+  - gpu
+  type: script
+  id: vllm
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVE4000WZMJGNH5
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: cloud
+  domains:
+  - research
+  - web
+  entrypoint: mcp__workspace__web_fetch
+  install: n-a
+  license: n-a
+  local_capable: false
+  name: web-fetch
+  notes: No JS execution. If it returns a page shell, escalate to mcp-chrome. Never
+    route around a block with curl.
+  purpose: Fetch a single URL's contents
+  review_status: verified
+  type: script
+  verified: '2026-08-13'
+  id: web-fetch
+  last_reviewed: '2026-09-02'
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKM001B9KCR9WC
+- agent_ready: true
+  auth: none
+  category: tool
+  cost: free
+  data_residency: cloud
+  domains:
+  - research
+  entrypoint: WebSearch (load via ToolSearch first)
+  install: n-a
+  license: n-a
+  local_capable: false
+  name: web-search
+  notes: Mandatory for any present-day factual claim. Do not answer from priors.
+  purpose: Search the live web
+  review_status: verified
+  type: script
+  verified: '2026-08-13'
+  id: web-search
+  last_reviewed: '2026-09-02'
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  history:
+  - 0000003831QWVKP001S066EDGV

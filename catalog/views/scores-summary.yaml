@@ -1,0 +1,648 @@
+agent-3dprint-guru:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.585Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+agent-architect:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.578Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+agent-cad-expert:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.583Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+agent-explorer:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.580Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+agent-guide:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.582Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+agent-implementor:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.581Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+agent-materials-engineer:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.584Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+agent-researcher:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.579Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+agent-validator:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.581Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+aider:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.529Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+anthropic-api:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.533Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+anythingllm:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.542Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+autogen:
+  my_score_current: 5
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.539Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 5.0
+browser-use:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.536Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+claude-code:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.528Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+context7:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.533Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+crawl4ai:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.538Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+crewai:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.527Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+deepseek-r1-14b:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.523Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+deepseek-v4:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.519Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+devstral:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.520Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+firecrawl:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.537Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+freecad-headless:
+  my_score_current: 0
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.602Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 0.0
+gemini-api:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.535Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+gemma3:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.521Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+git:
+  my_score_current: 10
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.600Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 10.0
+glm-5-2:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.518Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+gpt-oss-20b:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.522Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+kb-3dmodel-source:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.604Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+kb-llm-instructions:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.605Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+kb-projects-registry:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.606Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+langflow:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.540Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+langfuse:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.532Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+langgraph:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.524Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+llama-cpp:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.515Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+lm-studio:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.517Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+localai:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.541Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+mcp:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.530Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+mcp-chrome:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.597Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+mcp-computer-use:
+  my_score_current: 5
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.597Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 5.0
+mcp-gmail:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.594Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+mcp-google-calendar:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.595Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+mcp-google-drive:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.596Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+mcp-postman:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.596Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+mcp-registry-search:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.599Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+mcp-scheduled-tasks:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.600Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+mem0:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.531Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+ms-agent-framework:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.525Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+ollama:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.513Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+openhands:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.529Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+openrouter:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.534Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+phi-4:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.521Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+pydantic-ai:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.526Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+python3:
+  my_score_current: 10
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.601Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 10.0
+qwen25-coder-14b:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.523Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+qwen3:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.517Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+ragflow:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.541Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+semantic-kernel:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.525Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+skill-canvas-design:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.590Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+skill-docx:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.585Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+skill-grill-me:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.592Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+skill-mcp-builder:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.588Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+skill-pdf:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.588Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+skill-pptx:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.587Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+skill-schedule:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.593Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+skill-skill-creator:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.589Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+skill-theme-factory:
+  my_score_current: 6
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.591Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 6.0
+skill-web-artifacts-builder:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.590Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+skill-xlsx:
+  my_score_current: 9
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.586Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 9.0
+vllm:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.514Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0
+web-fetch:
+  my_score_current: 7
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.603Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 7.0
+web-search:
+  my_score_current: 8
+  score_samples: 1
+  score_trend: flat
+  estimate: true
+  last_outcome_ts: '2026-09-02T10:51:56.604Z'
+  by_task_type: {}
+  by_actor:
+    system:migration: 8.0

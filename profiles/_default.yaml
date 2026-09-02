@@ -1,0 +1,12 @@
+id: _default
+privacy_default: cloud           # local | hybrid | cloud
+license_policy: internal-only    # internal-only | commercial-ok
+budget_usd_per_task: 0.25
+weights:                         # decision 4
+  score: 0.40
+  local: 0.20
+  agent_ready: 0.15
+  cost: 0.15
+  fresh: 0.10
+task_type_affinity: {}           # empty until a customer records real usage
+paths: {}                        # no machine-specific paths ship in the default profile
