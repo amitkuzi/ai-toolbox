@@ -1,10 +1,9 @@
 # PRD — AI Toolbox Plugin
 
-**Version:** 0.2 · **Date:** 2026-09-02 · **Owner:** Amit Kuzi · **Status:** draft for approval
+**Version:** 0.1 · **Date:** 2026-09-02 · **Owner:** Amit Kuzi · **Status:** draft for approval
 **Target repo:** `github.com/amitkuzi/ai-toolbox` · **Package:** Claude Code plugin (Agent-Skills compatible)
 
-> Internal, English. Canonical PRD for `amitkuzi/ai-toolbox`. Hebrew version: `docs/he/PRD.md`.
-> **0.2:** adds §1a Data principles (P1–P4): storage behind an abstraction, full decision tracing, additive scores, immutable append-only data.
+> Internal, English. This is the seed for `docs/PRD.md` in the new repo. The Hebrew user-facing version lives in `inbox/ai-toolbox/PRD-ai-toolbox.md`.
 
 ---
 
@@ -20,20 +19,6 @@ AI Toolbox is an "operating system for tool selection": a self-maintaining catal
 | Decision engine | Markdown rules interpreted by the LLM. No deterministic CLI or HTTP router in V1 (data format is designed so either can be added later without migration). |
 | Scheduled curator | GitHub Actions by default; Docker + host cron (`ops/`) as a documented self-host option. Both run the same `toolbox-curate` skill. |
 | Licensing | Plugin code MIT. Amit's real catalog and score log stay private; the public plugin ships with `catalog-example/`. |
-| Data model | Event-sourced: append-only ledgers are the source of truth; YAML/Markdown "catalog files" are generated projections. See §1a. |
-
----
-
-## 1a. Data principles (binding — override any other section)
-
-| # | Principle | In practice |
-|---|---|---|
-| **P1 — Storage behind an abstraction** | `tools.yaml` is an *implementation* of storage, not the API. Every skill, agent and command reaches data only through the **Catalog Store** (`scripts/store.py`) with four operations: `append`, `query`, `project`, `trace`. | V1 backend = `files` (JSONL + YAML in git). Future backends: `sqlite`, `postgres`, enterprise storage (Blob/S3, Dataverse, …). Switching = `--backend`; rules and skills do not change. No file under `rules/`, `skills/`, `agents/`, `commands/` mentions a catalog path. A contract test runs identically against every backend. |
-| **P2 — Every decision and its reasoning is logged and traceable** | A `decision` event carries: task input, profile, `rules_version` (+hash), swarm level and why, tier and why, and per subtask **every candidate considered** with its effective score, the winner, runner-up and a free-text `reason`. | `/toolbox:trace <decision_id>` prints the full chain: decision → candidates → outcomes → score impact → which catalog events were in force at that moment (`as_of`). There are no silent decisions. |
-| **P3 — Scores are additive, never replaced** | There is no editable `my_score` field. There are **score events**: `score.seed` (initial estimate + reason), `score.outcome`, `score.human`, `score.retract`. `my_score_current` is a *computed* fold (EMA + decay + human weight). | `rescore.py` is a projection, not an editor. Full score history is always available per tool, per task type, per actor. |
-| **P4 — Data is immutable; the LLM only appends** | Every collection is a ledger of events (`tool.added`, `tool.revised`, `tool.status`, `tool.retired`, `source.*`, `model.*`, `decision`, `score.*`, `adr.*`, `gap.*`). Every event carries `event_id`, `ts`, `actor`, `via`, `reason` (required for anything but an initial add), optional `supersedes`. "Update" = new event referencing the `id`. "Delete" = `*.retired` event with a reason. | The LLM (curator, route, outcome) **never edits** an existing line and never writes views. CI fails if a diff under `ledger/` deletes or modifies a line, or if an event lacks `ts`/`actor`/`reason`. `views/*` are produced only by `store project`; CI asserts `views == project(ledger)`. |
-
-**Effect on what exists today:** the current `tools.yaml` becomes a **view** (`views/tools.yaml`) — human-readable, diff-friendly, but not the source of truth. Truth is `ledger/tools.jsonl`. Phase 1 migration converts every existing record into a `tool.added` event with `via: migration` and a `reason` citing the source file and its `last_reviewed`.
 
 ---
 
@@ -55,7 +40,7 @@ AI Toolbox is an "operating system for tool selection": a self-maintaining catal
 | G1 | One catalog, one schema | 100% of records from both files merged, `scripts/validate.py` passes in CI |
 | G2 | Five decisions documented and executed | Every routed task writes a `decision` record with all five fields |
 | G3 | Measurable cost reduction | ≥ 40% of tasks routed to T0/T1 (local / cheap) instead of frontier |
-| G4 | Closed feedback loop | Every task ends with a `score.outcome` event; `my_score_current` is recomputed after ≥ 5 samples without modifying any existing record |
+| G4 | Closed feedback loop | Every task ends with an `outcome` record; `my_score` auto-updates after ≥ 5 samples |
 | G5 | Living catalog | Daily run adds/validates tools unattended; weekly run reviews sources |
 | G6 | Distributable | Clean install in 3 commands, no dependency on Amit's machine, clear license |
 
@@ -71,7 +56,7 @@ AI Toolbox is an "operating system for tool selection": a self-maintaining catal
 | Orchestrating agent (Claude Code) | Catalog + rule + memory before every delegation |
 | Scheduled curator agent | Discover, validate, first-assess, commit — unattended |
 | External customer | Install the plugin on their own catalog and profile |
-| Amit as lecturer | `/toolbox:trace` on a real decision as live proof for the talk |
+| Amit as lecturer | `decisions.md` + `scores.jsonl` as live proof for the talk |
 
 ---
 
@@ -96,25 +81,14 @@ ai-toolbox/
 │   ├── 03-category-gate.md
 │   ├── 04-tool-ranking.md
 │   ├── 05-outcome-scoring.md
-│   ├── 06-safety.md
-│   └── 07-data-contract.md         # P1–P4 phrased for the agent: what may be appended, what is never edited
-├── catalog/                        # private in Amit's copy; catalog-example/ in public
-│   ├── ledger/                     # SOURCE OF TRUTH — append-only (P4)
-│   │   ├── tools.jsonl  sources.jsonl  models.jsonl
-│   │   ├── scores.jsonl            # decision / score.seed / score.outcome / score.human / score.retract
-│   │   ├── decisions.jsonl         # ADRs as events (adr.added / adr.superseded)
-│   │   └── gaps.jsonl              # gap.opened / gap.hit / gap.closed
-│   ├── views/                      # PROJECTIONS — generated by `store project`, never hand-edited (P3/P4)
-│   │   ├── tools.yaml  sources.yaml  models.yaml
-│   │   ├── scores-summary.yaml     # my_score_current, samples, trend, by_task_type, by_actor
-│   │   ├── decisions.md  gaps.md
+│   └── 06-safety.md
+├── catalog/                        # source of truth (private in Amit's copy; catalog-example/ in public)
+│   ├── tools.yaml  sources.yaml  models.yaml
+│   ├── scores.jsonl  changelog.jsonl        # append-only
+│   ├── decisions.md  gaps.md
 │   └── evals/<tool-id>.md
 ├── profiles/{_default, amit}.yaml  # "who is using it" — weights, privacy, license policy, paths
-├── scripts/
-│   ├── store.py                    # Catalog Store adapter (P1): append | query | project | trace
-│   ├── backends/{files.py, sqlite.py}   # + postgres / enterprise later; one contract test for all
-│   ├── validate.py                 # schema + append-only guard + views == projection
-│   └── rescore.py                  # score projection (P3) — reads events, writes nothing to ledger
+├── scripts/{validate.py, rescore.py}
 ├── ops/                            # Docker + cron alternative
 ├── .github/workflows/{validate, daily-refresh, weekly-sources, monthly-audit}.yml
 ├── docs/
@@ -125,56 +99,35 @@ ai-toolbox/
 
 ```
 user task
-  → [SessionStart hook] `store project --summary` → catalog summary + active profile
-  → skill toolbox-route   (reads: `store query tools|models --routable`, profile, rules/)
-      1 swarm gate        → L0 | L1 | L2 | L3            (+ reason)
-      2 model tier        → T0..T3 for orchestrator and each agent (+ reason)
+  → [SessionStart hook] inject catalog summary + active profile
+  → skill toolbox-route
+      1 swarm gate        → L0 | L1 | L2 | L3
+      2 model tier        → T0..T3 for orchestrator and for each agent
       3 category gate     → per subtask: kb|schedule|script|mcp|skill|model|subagent
-      4 tool ranking      → ALL candidates + effective scores + winner + runner-up + install/auth + reason
-      `store append scores {kind: decision, rules_version, candidates[], reason}`      (P2)
+      4 tool ranking      → winner + runner-up + install/auth + reason
+      write decision → catalog/scores.jsonl
   → execution
-  → [SubagentStop / Stop hooks] remind to close the open decision
+  → [SubagentStop / Stop hooks] remind to close
   → skill toolbox-outcome
-      5 outcome           → result, rework, cost, duration, score, scored_by, reason
-      `store append scores {kind: score.outcome | score.human, decision_id, …}`         (P3/P4 — append only)
-  → daily run: `store project` regenerates views/* (my_score_current is computed, ledger untouched)
+      5 outcome           → success/partial/fail, rework, cost, duration, score, scored_by
+      append outcome → scores.jsonl
+  → daily run: scripts/rescore.py folds outcomes into tools.yaml / models.yaml
 ```
-
-**Tracing (P2):** `/toolbox:trace d-20260902-001` prints task → level/tier and why → per subtask the candidates and scores → winner → every outcome → how much `my_score_current` moved → which `tool.*` events were in force at that time.
 
 ### 5.3 Scheduled flow (curator)
 
 | Run | When | Agent | Does |
 |---|---|---|---|
-| `daily-refresh` | 07:00 | `toolbox-curator` (T1, `--max-turns 40`, tools `Read,Bash(store append …),WebSearch,WebFetch`) | discover from sources (value_score ≥ 3) → append `tool.added` + `score.seed` (+reason); validate oldest slice → append `tool.status`; `store project`; try to close gaps → `gap.closed`; `validate.py`; commit |
+| `daily-refresh` | 07:00 | `toolbox-curator` (T1, `--max-turns 40`, tools `Read,Edit,WebSearch,WebFetch`) | discover from `sources.yaml` (value_score ≥ 3) → `seed-unverified`; validate oldest slice → verified/stale/dead; `rescore.py`; try to close gaps; changelog; commit |
 | `weekly-sources` | Mon 08:00 | `toolbox-curator` | re-score sources, hunt new ones, list `needs_user_action` in commit message |
-| `monthly-audit` | 1st | `toolbox-auditor` | stale > 90 d, licenses, run `evals/` for every routable tool → append `tool.status`; propose weight changes **as a PR** |
-
-The curator never opens `views/` for editing and never removes a ledger line. A "fix" is a new event with `reason` and `supersedes: <event_id>`.
+| `monthly-audit` | 1st | `toolbox-auditor` | stale > 90 d, licenses, run `evals/` for every routable tool, propose weight changes **as a PR** |
 | `first-assessment` | on discover / on demand | `toolbox-assessor` | structural score from docs only (license, autonomy, local_capable, cost, maturity, agent_ready) + write `evals/<id>.md` + propose a bounded trial. **Never executes the tool.** |
 
 ---
 
 ## 6. Data schemas
 
-### 6.0 Event envelope (shared by every ledger — P4)
-
-| Field | Notes |
-|---|---|
-| `event_id` | ULID — unique, time-sortable |
-| `ts` | ISO-8601 UTC |
-| `kind` | `tool.added` \| `tool.revised` \| `tool.status` \| `tool.retired` \| `source.*` \| `model.*` \| `decision` \| `score.seed` \| `score.outcome` \| `score.human` \| `score.retract` \| `adr.*` \| `gap.*` |
-| `subject_id` | the tool / source / model / decision id the event is about |
-| `actor` | `human:<id>` \| `agent:<name>` \| `auto:<check>` \| `system:migration` |
-| `via` | `route` \| `outcome` \| `daily-run` \| `weekly-run` \| `monthly-audit` \| `ui-manual` \| `migration` |
-| `reason` | required on every event except an initial `*.added`; free text, ≥ 1 line |
-| `supersedes` | optional prior `event_id` this event corrects |
-| `rules_version` | `decision` only: `rules/` semver + short hash |
-| `payload` | body, per `kind` |
-
-Rules: no line is ever updated or deleted. `tool.revised` carries only changed fields. Current state of a tool = fold of its events by `ts`. `views/tools.yaml` is the fold's output, not an input.
-
-### 6.1 Tool record (payload of `tool.added`; what `views/tools.yaml` shows — ★ required, ⚙ computed, view-only)
+### 6.1 `tools.yaml` (unified; ★ = required)
 
 | Field | Type | Notes |
 |---|---|---|
@@ -192,30 +145,27 @@ Rules: no line is ever updated or deleted. `tool.revised` carries only changed f
 | ★ `license` | SPDX | + `license_notes` |
 | ★ `install`, ★ `auth`, `entrypoint` | string | `auth`: `none` \| `account` \| `api-key` \| `oauth` \| `local-path` |
 | `published_score` | string + source | used **only** to rank the trial queue |
-| ⚙ `my_score_current` | 1–10 | fold of `score.*` events (EMA + decay + human × 1.5); `estimate: true` while `score_samples < 5` |
-| ⚙ `score_samples`, ⚙ `score_trend` | int, `up\|flat\|down` | |
-| ⚙ `review_status` | `seed-unverified` \| `verified` \| `stale` \| `dead` | from the latest `tool.status` |
-| ⚙ `verified` | date | from the latest successful `score.outcome`; stale after 90 d. Absent ⇒ *candidate*, not *routable* |
-| ⚙ `last_reviewed` | date | from the latest `tool.status` / `tool.revised` |
-| ⚙ `history` | list of `event_id` | every event that touched this tool (P2) |
+| ★ `my_score` | 1–10 | empirical once `score_samples ≥ 5`, otherwise a flagged estimate |
+| `score_rationale`, `score_samples` | string, int | |
+| ★ `review_status` | `seed-unverified` \| `verified` \| `stale` \| `dead` | |
+| ★ `verified` | date | last successful real use; stale after 90 d. Absent ⇒ *candidate*, not *routable* |
+| `last_reviewed` | date | last metadata check |
 | `maturity`, `tags`, `homepage`, `repo`, `notes` | | |
 
 ### 6.2 `models.yaml`
 
 `id`, `provider`, `model`, `tier` (T0 local free · T1 cheap cloud · T2 mid · T3 frontier), `input_usd_mtok`, `output_usd_mtok`, `cache_hit_usd_mtok`, `context_k`, `tokens_per_sec`, `data_residency`, `strengths` (`coding | reasoning | classification | hebrew | vision | long-context`), `my_score`, `score_samples`, `verified`.
 
-### 6.3 `ledger/scores.jsonl` (append-only; adopts F-401…F-410 from the ai-gateway PRD, plus P2/P3)
-
-A `decision` and every `score.*` after it share `subject_id = decision_id`. The decision carries **every candidate considered** (P2):
+### 6.3 `scores.jsonl` (append-only; adopts F-401…F-410 from the ai-gateway PRD)
 
 ```jsonl
-{"event_id":"01J…","ts":"2026-09-02T10:00:00Z","kind":"decision","subject_id":"d-20260902-001","actor":"agent:orchestrator","via":"route","rules_version":"1.0.0+a1b2c3","payload":{"task":"rename 200 STL files by convention","task_type":"file-batch","profile":"amit","swarm_level":"L1","swarm_reason":"single deterministic subtask, no external service","orchestrator_tier":"T0","orchestrator_model":"local-fast","tier_reason":"hardest subtask is script → T0; privacy hybrid","subtasks":[{"id":"s1","gate_answer":"Q1 yes — reproducible","type":"script","candidates":[{"tool_id":"python3","effective":0.91,"my_score_ctx":9.2,"samples":14},{"tool_id":"powershell","effective":0.74,"my_score_ctx":7.0,"samples":3,"estimate":true}],"chosen":"python3","runner_up":"powershell","reason":"highest effective; verified 12 d ago; free/local"}]}}
-{"event_id":"01J…","ts":"2026-09-02T10:00:09Z","kind":"score.outcome","subject_id":"d-20260902-001","actor":"auto:validator","via":"outcome","payload":{"tool_id":"python3","subtask":"s1","result":"success","rework":false,"duration_s":4,"cost_usd":0,"score":9},"reason":"200/200 renamed; dry-run diff matched"}
-{"event_id":"01J…","ts":"2026-09-02T10:05:00Z","kind":"score.human","subject_id":"d-20260902-001","actor":"human:amit","via":"outcome","payload":{"tool_id":"python3","score":10},"reason":"exactly what I wanted"}
-{"event_id":"01J…","ts":"2026-09-03T08:00:00Z","kind":"score.retract","subject_id":"d-20260902-001","actor":"human:amit","via":"ui-manual","supersedes":"01J…","payload":{},"reason":"scored the wrong tool"}
+{"ts":"2026-09-02T10:00:00Z","kind":"decision","decision_id":"d-20260902-001","task":"rename 200 STL files by convention","task_type":"file-batch","actor":"human:amit","profile":"amit","swarm_level":"L1","orchestrator_model":"T0:local-fast","subtasks":[{"id":"s1","type":"script","tool_id":"python3","alt":"agent-implementor","reason":"Q1 reproducible"}]}
+{"ts":"2026-09-02T10:00:09Z","kind":"outcome","decision_id":"d-20260902-001","tool_id":"python3","success":true,"partial":false,"rework":false,"duration_s":4,"cost_usd":0,"score":9,"scored_by":"auto:validator","reason":"200/200 renamed, dry-run diff matched"}
+{"ts":"2026-09-02T10:05:00Z","kind":"outcome","decision_id":"d-20260902-001","tool_id":"python3","score":10,"scored_by":"human:amit","reason":"exactly what I wanted"}
+{"ts":"2026-09-03T08:00:00Z","kind":"retraction","retracts":"<record_id>","reason":"scored the wrong tool"}
 ```
 
-What `store project` computes from this (P3): `views/scores-summary.yaml` — per `tool_id`: `my_score_current`, `score_samples`, `score_trend`, `last_outcome_ts`, `by_task_type`, `by_actor`. None of it is written back to the ledger. Multiple outcomes per decision are expected; no edits, only retractions; the ledger is never written by a projection (F-410).
+Rules: `scored_by` ∈ `agent:<name>` | `human:<id>` | `auto:<check>`; multiple outcomes per decision are expected; no edits, only retractions; `tools.yaml` is never written by the loop at task time — only by the daily `rescore.py` (F-410).
 
 ### 6.4 `profiles/<actor>.yaml` — "who is using it"
 
@@ -319,15 +269,7 @@ effective = w_score · my_score_ctx
 
 Collected per participating `tool_id`: `success | partial | fail`, `rework`, `duration_s`, `cost_usd` (measured via LiteLLM when present, else agent estimate prefixed `est:`), `score` 1–10 + `reason`, `scored_by`, `escalated_from`.
 
-Score projection (daily, by `store project` / `rescore.py` — a computation, never an edit, P3):
-
-```
-events = store.query("scores", tool_id=T, kinds=[score.seed, score.outcome, score.human]) minus retracted
-if len(events) < 5:  my_score_current = seed.score; estimate = true
-else:                my_score_current = EMA(α=0.3, by ts) with 90-day decay, human × 1.5
-                     score_samples = len(events); score_trend = sign(mean(last 5) − mean(prev 5))
-drop ≥ 2 points vs previous view ⇒ the agent APPENDS a `tool.status` note event with a reason (it does not edit)
-```
+Score update (daily, by `rescore.py`): if `score_samples ≥ 5` ⇒ `my_score = EMA(α=0.3)` over outcome scores with 90-day decay and `human × 1.5`; drop of ≥ 2 points ⇒ note + changelog line.
 
 Weight update (monthly, by auditor): regret analysis — for each failed decision, would the runner-up have succeeded per history? A repeated pattern (≥ 3) against one weight ⇒ proposed change to `profiles/` **as a PR**, never auto-committed.
 
@@ -346,11 +288,9 @@ Weight update (monthly, by auditor): regret analysis — for each failed decisio
 |---|---|
 | `/toolbox:route <task>` | decisions 1–4, prints selection table, writes decision |
 | `/toolbox:outcome <decision_id> <success\|partial\|fail> [score] [reason]` | decision 5 |
-| `/toolbox:add <url>` | classify tool/source, append `tool.added` / `source.added` with `via: ui-manual` + `reason` |
+| `/toolbox:add <url>` | classify tool/source, add `pending` record, changelog |
 | `/toolbox:gaps` | list open gaps, propose build when `hits ≥ 3` |
 | `/toolbox:audit` | local stale check |
-| `/toolbox:trace <decision_id \| tool_id>` | **P2** — full chain for a decision, or the complete event history of a tool |
-| `/toolbox:project` | run `store project`, show the views diff before commit |
 
 ---
 
@@ -365,10 +305,7 @@ Weight update (monthly, by auditor): regret analysis — for each failed decisio
 | ID | Requirement |
 |---|---|
 | NF-1 | Every data file validated in CI (`scripts/validate.py`) before merge |
-| NF-2 | **P4:** every `ledger/*.jsonl` is append-only; CI fails on a deleted or modified line, or an event missing `ts`/`actor`/`reason` where required |
-| NF-2b | **P3/P4:** `views/` are never hand-edited; CI runs `store project` and fails on any mismatch |
-| NF-2c | **P1:** no catalog path appears under `rules/`, `skills/`, `agents/`, `commands/`; all access goes through `store` |
-| NF-2d | **P1:** one store contract test passes on every backend; `files` and `sqlite` both pass before V1 |
+| NF-2 | `scores.jsonl`, `changelog.jsonl` append-only; CI fails on deleted lines |
 | NF-3 | Plugin works offline (only cloud `mcp`/`model` entries need network) |
 | NF-4 | No machine-specific absolute paths anywhere in the repo (→ `profiles/`) |
 | NF-5 | Curator runs with tool allowlist, `--max-turns`, logged cost |
@@ -385,11 +322,9 @@ Weight update (monthly, by auditor): regret analysis — for each failed decisio
 | `scores.jsonl` stays empty | H | H | `Stop` hook + mandatory Validator on L3 + `auto:` outcomes without a human |
 | Seed estimates optimistic (+1 measured 2026-08-23) | certain | L | estimate < measurement, always |
 | Actions cost creep | L | L | OAuth token, max-turns, cost log |
-| Schema merge breaks status-app | M | M | status-app reads `views/tools.yaml` (same human-readable shape) during transition; it never writes to the ledger |
+| Schema merge breaks status-app | M | M | keep `AiAgent/ai-toolbox` as submodule/symlink to `catalog/` during transition |
 
-**Decided:** `models.yaml` ships publicly, as a template/starting point for others to extend — prices going stale is an accepted cost of a maintained public template, not a reason to hide it. Own `my_score`/`score_samples` in the shipped file stay illustrative seed values, not a live export of Amit's private `scores.jsonl`.
-
-**Open for Amit:** default customer profile name; Hebrew `report` skill bundled or external dependency.
+**Open for Amit:** default customer profile name; whether `models.yaml` ships publicly (prices go stale); Hebrew `report` skill bundled or external dependency.
 
 ---
 
@@ -398,10 +333,7 @@ Weight update (monthly, by auditor): regret analysis — for each failed decisio
 - [ ] `claude plugin install` from GitHub works on a clean machine
 - [ ] `/toolbox:route "rename 200 STL files"` → `python3`, L1, T0, no agent
 - [ ] `/toolbox:route "design a bracket, pick a filament, document in Hebrew"` → L3, 3 subtasks, 3 types, Validator
-- [ ] 5 outcomes on one tool → `my_score_current` changes in `views/scores-summary.yaml` after `store project`, and the ledger diff is exactly 5 appended lines
-- [ ] `/toolbox:trace` on a real decision shows every candidate and every reason
-- [ ] `store --backend sqlite project` yields views identical to `--backend files` on the same ledger
-- [ ] An agent attempt to edit a ledger line fails CI
+- [ ] 5 outcomes on one tool → `my_score` updated by the daily run
 - [ ] Actions run 7 consecutive days without failure and add ≥ 1 new tool
 - [ ] All `docs/` present; a customer can start from the README without asking Amit
-- [ ] The lecture points at `views/decisions.md`, `ledger/scores.jsonl` and `/toolbox:trace` in the new repo
+- [ ] The lecture points at `decisions.md` + `scores.jsonl` in the new repo

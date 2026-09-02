@@ -1,12 +1,12 @@
 # תוכנית עבודה — AI Toolbox Plugin
 
-**גרסה:** 0.2 · **תאריך:** 2026-09-02 · **מבוסס על:** `PRD-ai-toolbox.md` v0.2 (עקרונות נתונים P1–P4) · **ענף git:** `ai-toolbox` (ענף פרויקט לפי git-conventions)
+**גרסה:** 0.1 · **תאריך:** 2026-09-02 · **מבוסס על:** `PRD-ai-toolbox.md` v0.1 · **ענף git:** `ai-toolbox` (ענף פרויקט לפי git-conventions)
 
 ---
 
 ## TL;DR
 
-- **7 שלבים, ~12 ימי עבודה של סוכנים** (לא ימים קלנדריים — רוב העבודה מקבילית). 0.2 מוסיף ~1.5 יום ל-Catalog Store + ledger (P1–P4).
+- **7 שלבים, ~11 ימי עבודה של סוכנים** (לא ימים קלנדריים — רוב העבודה מקבילית).
 - **סדר:** ריפו וסכמה → כללים 1–4 → לולאת המשוב → Curator + Actions → תיעוד ואריזה → ולידציה ופיילוט → פרסום.
 - **אבן דרך ראשונה שאפשר להשתמש בה: סוף שלב 2** — `/toolbox:route` עובד על הקטלוג הממוזג.
 - **כל שלב מסתיים ב-Validator + commit** לפי הפייפליין `tasks/ → handoffs/ → drafts/ → Validator → inbox/`.
@@ -19,9 +19,8 @@
 |---|---|
 | **מודל לפי משימה** (החלטה 2 של ה-PRD, מיושמת על עצמנו) | מיזוג YAML, ולידציה, סקריפטים → T0/T1. כתיבת rules ו-docs → T2. ביקורת ארכיטקטורה → T3 פעם אחת בשלב 0. |
 | **סוכן אחד, אחריות אחת** | כל תת-משימה בטבלאות למטה עם בעלים אחד מהצוות |
-| **אין רשומה בלי ולידציה** | `scripts/validate.py` רץ לפני כל commit משלב 1 — כולל append-only guard ו-`views == project(ledger)` |
-| **P1–P4 מיום אחד** | אף skill/agent לא ניגש לקובץ ב-`catalog/` ישירות; רק `store`. הסוכנים מוסיפים אירועים, לא עורכים. הפרה = כשל Validator. |
-| **אנגלית בריפו, עברית ב-inbox** | סיכומי שלבים → `inbox/` דרך skill `report` |
+| **אין רשומה בלי ולידציה** | `scripts/validate.py` רץ לפני כל commit משלב 1 |
+| **אנגלית בריפו, עברית ב-inbox** | סיכומי שלבים → `inbox/ai-toolbox/` דרך skill `report` |
 | **commit לכל שלב** | prefix לפי git-conventions + גרסת plugin בהודעה (`v0.1.0` → `v0.7.0`) |
 
 ---
@@ -41,21 +40,19 @@
 
 ---
 
-### שלב 1 — Catalog Store, ledger אחד, קטלוג אחד (3 ימים)
+### שלב 1 — סכמה אחת, קטלוג אחד (1.5 יום)
 
 | # | משימה | בעלים | פלט | קבלה |
 |---|---|---|---|---|
-| 1.1 | `docs/schema.md` — מעטפת האירוע (PRD §5.0) + payloads לכל `kind` + השדות המחושבים של ה-views | Implementor | מסמך | Validator: כל שדה משתי הסכמות הישנות ממופה לאירוע/view או נדחה בנימוק |
-| 1.2 | **`scripts/store.py` + `backends/files.py`** — `append` / `query` / `project` / `trace` (P1); `event_id` ULID, `ts`, חובת `reason` | Implementor (T2) | adapter | contract test: 12 תרחישים עוברים |
-| 1.3 | `backends/sqlite.py` — אותו contract test | Implementor (T1) | backend שני | `project` מייצר views זהים ביט-לביט ל-`files` על אותו ledger |
-| 1.4 | `scripts/validate.py` — סכמה + **append-only guard** (diff של ledger מכיל רק `+`) + `views == project(ledger)` + NF-2c (אין נתיבי catalog ב-rules/skills) | Implementor (T1) | סקריפט + Action `validate.yml` | נכשל על 6 הפרות מכוונות (מחיקה, עריכה, אירוע בלי reason, view ידני, נתיב ב-skill, id כפול) |
-| 1.5 | **מיגרציה:** `AiAgent/ai-toolbox/tools.yaml` (36) + `TaskTriagOrcetrator/ai-toolbox/tools.yaml` (36) → אירועי `tool.added` + `score.seed` ב-`ledger/tools.jsonl`/`scores.jsonl`, `via: migration`, `reason` מצטט קובץ מקור ו-`last_reviewed` | Explorer (טבלת מיפוי id→id) → Implementor (סקריפט מיגרציה חד-פעמי, T1) | ledger | 0 כפילויות `id`; כל אירוע עם `type` **ו-**`category`; `store project` מייצר `views/tools.yaml` שמכיל את כל 72 הרשומות (אחרי איחוד כפולים) |
-| 1.6 | מיגרציה של `sources.yaml` (32), `changelog.jsonl` (→ אירועים היסטוריים עם ה-`ts` המקורי), `decisions.md` (7 ADR → `adr.added`), `gaps.md` (5 → `gap.opened`) | Implementor (T1) | | ה-changelog ההיסטורי נשמר כאירועים — לא נזרק |
-| 1.7 | `ledger/models.jsonl` — מ-`ai-gateway/docs/model-catalog.md` + tiers T0–T3 | Researcher (אימות מחירים עדכניים) → Implementor | | כל מודל עם tier, מחיר, residency |
-| 1.8 | ניקוי נתיבים אבסולוטיים (NF-4) → `profiles/amit.yaml`; `profiles/_default.yaml` | Implementor | | `grep -r "C:\\\\" catalog/` ריק |
-| 1.9 | `rules/07-data-contract.md` — P1–P4 בניסוח לסוכן (מה מותר: `store append`; מה אסור: Edit על catalog/) | Architect → Implementor | | Validator: סוכן T1 שקורא רק את הקובץ הזה מסרב לערוך view |
+| 1.1 | כתיבת `docs/schema.md` — הסכמה המאוחדת מ-PRD §5 עם דוגמה לכל שדה | Implementor | מסמך | Validator: כל שדה משתי הסכמות הישנות ממופה או נדחה בנימוק |
+| 1.2 | `scripts/validate.py` — בודק tools/sources/models/scores מול הסכמה; append-only check ל-jsonl | Implementor (T1) | סקריפט + GitHub Action `validate.yml` | נכשל על 5 קבצים שבורים מכוונים, עובר על תקינים |
+| 1.3 | מיזוג `AiAgent/ai-toolbox/tools.yaml` (36) + `TaskTriagOrcetrator/ai-toolbox/tools.yaml` (36) → `catalog/tools.yaml` | Explorer (מיפוי) → Implementor (מיזוג, T1) | קטלוג ממוזג | 0 כפילויות `id`; כל רשומה עם `type` **ו-**`category`; ולידציה עוברת |
+| 1.4 | `catalog/sources.yaml` — העתקה + ניקוי `pending` | Implementor | | ולידציה |
+| 1.5 | `catalog/models.yaml` — מ-`ai-gateway/docs/model-catalog.md` + tiers T0–T3 | Researcher (אימות מחירים עדכניים) → Implementor | | כל מודל עם tier, מחיר, residency |
+| 1.6 | העברת `decisions.md`, `gaps.md`, `evals/`, `changelog.jsonl` — ניקוי נתיבים אבסולוטיים (NF-4) | Implementor | | `grep -r "C:\\\\" catalog/` ריק |
+| 1.7 | `profiles/_default.yaml` + `profiles/amit.yaml` (משקולות, privacy, license policy, נתיבים) | Implementor | | ולידציה |
 
-**Commit:** `config: catalog store + append-only ledger + migrated catalog (v0.2.0)`
+**Commit:** `config: unified catalog schema + merged catalog (v0.2.0)`
 **סיכום לאינבוקס:** "מה מוזג, מה נזרק, מה נשאר פתוח" (עברית).
 
 ---
@@ -69,8 +66,8 @@
 | 2.3 | `rules/02-orchestrator-model.md` — tiers, 6 כללי בחירה, escalation | Architect → Implementor | | 6 דוגמאות עקביות בין מודלים |
 | 2.4 | `rules/03-category-gate.md` — העברת §1 + §3 מ-`selection-rules.md`, הוספת `kb`/`schedule` | Implementor | | 3 הדוגמאות המקוריות עדיין עוברות |
 | 2.5 | `rules/04-tool-ranking.md` — מסננים קשיחים, נוסחת effective, `my_score_ctx`, cold-start, פלט | Architect → Implementor | | דוגמה מחושבת ידנית לכל מסלול |
-| 2.6 | `skills/toolbox-route/SKILL.md` — קורא rules 00–04 + 07, profile, `store query --routable`; מדפיס טבלה; `store append` של decision **עם כל המועמדים והנימוקים** (P2) | Implementor | skill | `skill-creator` eval: 10 משימות, ≥ 8 ניתובים תואמים לצפוי; כל decision מכיל `candidates[]`, `reason`, `rules_version` |
-| 2.7 | `commands/route.md`, `commands/gaps.md`, **`commands/trace.md`** (P2) | Guide | | `/toolbox:trace` על decision מהעבר מציג את השרשרת המלאה |
+| 2.6 | `skills/toolbox-route/SKILL.md` — קורא rules 00–04 + profile + catalog, מדפיס טבלה, כותב decision ל-`scores.jsonl` | Implementor | skill | `skill-creator` eval: 10 משימות, ≥ 8 ניתובים תואמים לצפוי |
+| 2.7 | `commands/route.md`, `commands/gaps.md` | Guide | | פקודות עובדות |
 | 2.8 | `hooks/hooks.json` — `SessionStart` בלבד בשלב זה | Guide | | תקציר מוזרק בפתיחה |
 
 **Commit:** `config: decision rules 1-4 + toolbox-route skill (v0.3.0)`
@@ -83,9 +80,8 @@
 | # | משימה | בעלים | פלט | קבלה |
 |---|---|---|---|---|
 | 3.1 | `rules/05-outcome-scoring.md` — איסוף, EMA, decay, min-samples, retraction, ניתוח חרטה | Architect → Implementor | | דוגמה מספרית לעדכון ציון |
-| 3.2 | `skills/toolbox-outcome/SKILL.md` + `commands/outcome.md` — רק `store append score.outcome / score.human` (P3/P4) | Implementor | | 3 outcome נרשמים ל-decision אחד; ה-diff של ה-ledger = 3 שורות `+` בלבד |
-| 3.3 | `scripts/rescore.py` = ה-projection של ציונים בתוך `store project` — מחשב `my_score_current`, `score_samples`, `score_trend`, `by_task_type`, `by_actor` ל-`views/scores-summary.yaml` ו-`views/tools.yaml`; **לא כותב ל-ledger** | Implementor (T1) | projection | בדיקת יחידה: 5 דגימות → ערך מחושב; 4 → `estimate: true`; retract מוריד דגימה; ledger ללא שינוי (hash) |
-| 3.3b | `commands/project.md` — `store project` + diff של views לפני commit | Guide | | |
+| 3.2 | `skills/toolbox-outcome/SKILL.md` + `commands/outcome.md` | Implementor | | 3 outcome נרשמים ל-decision אחד בלי לדרוס |
+| 3.3 | `scripts/rescore.py` — קורא `scores.jsonl`, מעדכן `my_score`/`score_samples` ב-`tools.yaml` ו-`models.yaml` (רץ רק ב-daily) | Implementor (T1) | סקריפט | בדיקת יחידה: 5 דגימות → עדכון; 4 → אין |
 | 3.4 | hooks `SubagentStop` + `Stop` — תזכורת לסגירת decision פתוח | Guide | | decision בלי outcome מציף תזכורת פעם אחת |
 | 3.5 | Validator ל-L3 רושם outcome `auto:validator` אוטומטית | Implementor | הרחבה ל-skill | בדיקה על משימת L3 |
 
@@ -98,9 +94,9 @@
 
 | # | משימה | בעלים | פלט | קבלה |
 |---|---|---|---|---|
-| 4.1 | `skills/toolbox-curate/SKILL.md` — רוטינות daily/weekly/monthly מ-CLAUDE.md §2 הקיים, מנוסחות מחדש כ-**append בלבד** (`tool.added`, `score.seed`, `tool.status`, `gap.closed`) + `store project` בסוף | Implementor | skill | ריצה ידנית מקומית: ledger diff הוא `+` בלבד, views מתעדכנות, validate עובר |
-| 4.2 | `agents/toolbox-curator.md`, `agents/toolbox-assessor.md`, `agents/toolbox-auditor.md` — role prompts, allowlist כלים (**ללא `Edit` על `catalog/`** — רק `Bash(store append …)`), max-turns | Implementor (T2) | 3 סוכנים | כל סוכן רץ headless; ניסיון Edit על catalog/ נחסם |
-| 4.3 | הערכה ראשונית: assessor מוסיף `score.seed` עם `reason` מפורט (rubric) + `evals/<id>.md` + הצעת ניסוי תחום, **בלי להריץ** | Implementor | | על 3 כלים חדשים: אירועים תואמים לסכמה, `reason` מצטט את הרובריקה |
+| 4.1 | `skills/toolbox-curate/SKILL.md` — רוטינות daily/weekly/monthly מ-CLAUDE.md §2 הקיים + `rescore.py` | Implementor | skill | ריצה ידנית מקומית מייצרת commit תקין |
+| 4.2 | `agents/toolbox-curator.md`, `agents/toolbox-assessor.md`, `agents/toolbox-auditor.md` — role prompts, allowlist כלים, max-turns | Implementor (T2) | 3 סוכנים | כל סוכן רץ headless |
+| 4.3 | הערכה ראשונית: assessor כותב ציון מבני + `evals/<id>.md` + הצעת ניסוי תחום, **בלי להריץ** | Implementor | | על 3 כלים חדשים: פלט תואם לסכמה, `seed-unverified` |
 | 4.4 | `.github/workflows/daily-refresh.yml`, `weekly-sources.yml`, `monthly-audit.yml` — secrets, שער YAML, commit bot | Guide → Implementor | 3 workflows | `workflow_dispatch` ידני מצליח ומבצע commit |
 | 4.5 | `ops/` — העברת Docker + `run-task.sh` הקיימים, עדכון ל-skill החדש | Implementor | | `docker compose run --rm runner daily` עובד |
 | 4.6 | `commands/add.md`, `commands/audit.md` | Guide | | |
@@ -118,8 +114,7 @@
 | 5.1 | `docs/PRD.md` (אנגלית — מהטיוטה שנמסרה עם מסמך זה), `docs/architecture.md`, `docs/rules.md` | Implementor (T2) | | Validator: תואם ל-rules/ בפועל |
 | 5.2 | `docs/curator.md`, `docs/profiles.md`, `docs/customer-guide.md` | Implementor | | לקוח מדומה (סוכן ללא context) מצליח להתקין לפי המדריך |
 | 5.3 | `README.md` — 3 פקודות התקנה, GIF של `/toolbox:route` (`gif_creator`) | Implementor + Guide | | |
-| 5.4 | `catalog/` → `catalog-example/` (ledger קטן + views) בגרסה הציבורית; הקטלוג האמיתי של עמית לריפו פרטי `ai-toolbox-catalog` | Orchestrator + Implementor | הפרדה | plugin ציבורי ללא `ledger/scores.jsonl` של עמית |
-| 5.4b | `docs/storage.md` — חוזה ה-Store, איך כותבים backend חדש (postgres/ארגוני), contract test | Implementor | | לקוח מדומה מוסיף backend דמה לפי המסמך |
+| 5.4 | `catalog/` → `catalog-example/` בגרסה הציבורית; הקטלוג האמיתי של עמית לריפו פרטי `ai-toolbox-catalog` (או ענף מוגן) | Orchestrator + Implementor | הפרדה | plugin ציבורי ללא `scores.jsonl` של עמית |
 | 5.5 | `Skills/ai-toolbox/SKILL.md` — skill דק בריפו `Skills` שמפנה ל-plugin | Implementor | | README של Skills מעודכן |
 | 5.6 | `CHANGELOG.md`, `docs/lecture-kit.md` (איזה קובץ מוכיח איזה שקף) | Implementor | | |
 | 5.7 | בדיקת רישיונות צד-ג' בקטלוג + disclaimer | Researcher | רשימה ב-`docs/licenses.md` | אין רשומה `license: unknown` |
@@ -133,7 +128,6 @@
 | # | משימה | בעלים | פלט | קבלה |
 |---|---|---|---|---|
 | 6.1 | `docs/evals/routing-suite.md` — 15 משימות ידועות עם ניתוב צפוי (כולל 3 הדוגמאות מ-selection-rules) | Architect | | |
-| 6.1b | **בדיקת אי-שינוי:** ריצה מלאה של daily + 10 route/outcome → hash של כל שורה קיימת ב-ledger זהה; רק תוספות | Validator | | P4 מוכח |
 | 6.2 | הרצת ה-suite על T1 ו-T2 — מדידת עקביות בין ריצות | Validator | טבלת תוצאות | ≥ 80% תואם; סטייה בין מודלים < 20% (אחרת → נפתח ADR ל-CLI ב-V2) |
 | 6.3 | פיילוט: שבוע של משימות אמיתיות של עמית דרך ה-plugin (3D printing, report, code) | Orchestrator | `scores.jsonl` עם ≥ 20 רשומות | ≥ 40% מהמשימות ב-T0/T1 (G3) |
 | 6.4 | התקנה נקייה על מחשב שני / container ריק לפי `customer-guide.md` | Validator | | עובד בלי שאלות לעמית |
@@ -170,14 +164,14 @@
 | שלב | ימי סוכן | מקביל ל- | תלוי ב- |
 |---|---|---|---|
 | 0 | 0.5 | — | — |
-| 1 | 3.0 | — | 0 |
+| 1 | 1.5 | — | 0 |
 | 2 | 2.0 | 5 (חלקית) | 1 |
 | 3 | 1.5 | 4 | 2 |
 | 4 | 1.5 | 3 | 1 (סכמה), 1.5 (models) |
 | 5 | 1.5 | 2–4 | טיוטות; סופי אחרי 4 |
 | 6 | 1.5 | — | 3, 4, 5 |
 | 7 | 0.5 | — | 6 |
-| **סה"כ** | **~12** | | **קריטי: 0→1→2→3→6→7 ≈ 9 ימים** |
+| **סה"כ** | **~10.5** | | **קריטי: 0→1→2→3→6→7 ≈ 7.5 ימים** |
 
 ---
 
@@ -185,12 +179,11 @@
 
 | סוג עבודה | Tier | מודל מוצע | הערכת עלות |
 |---|---|---|---|
-| מיגרציה, ולידציה, backends, hooks | T1 | Haiku 4.5 / kimi-coder | ~$3 |
-| `store.py` + contract test | T2 | Sonnet 5 / kimi-coder | ~$2 |
+| מיזוג YAML, ולידציה, סקריפטים, hooks | T1 | Haiku 4.5 / kimi-coder | ~$2 |
 | כתיבת rules, skills, docs | T2 | Sonnet 5 | ~$8 |
 | ביקורת ארכיטקטורה (0.3), eval-suite (6.1) | T3 | Opus 5 — פעמיים בלבד | ~$3 |
 | Curator בפיילוט (7 ימים × daily) | T1 | Haiku / Sonnet עם max-turns | ~$2 |
-| **סה"כ משוער** | | | **~$18** (או $0 עם OAuth של המנוי) |
+| **סה"כ משוער** | | | **~$15** (או $0 עם OAuth של המנוי) |
 
 ---
 
@@ -198,8 +191,7 @@
 
 | שלב | סיכון | מיטיגציה |
 |---|---|---|
-| 1 | מיזוג של 72 רשומות מייצר שגיאות | Explorer מייצר טבלת מיפוי `id → id` קודם; סקריפט מיגרציה (לא ידני); ולידציה אוטומטית |
-| 1 | סוכנים "מתקנים" views ידנית מתוך הרגל | `07-data-contract.md` נטען בכל סשן; CI מפיל; allowlist ללא Edit על catalog/ |
+| 1 | מיזוג ידני של 70 רשומות מייצר שגיאות | Explorer מייצר טבלת מיפוי `id → id` קודם; Implementor ממזג לפי הטבלה; ולידציה אוטומטית |
 | 2 | rules ארוכים מדי → הסוכן מדלג | כל rule ≤ 150 שורות; טבלת החלטה בראש, דוגמאות בסוף |
 | 3 | אף אחד לא סוגר outcome | hook `Stop` + `auto:validator` ב-L3 — הלולאה לא תלויה באדם |
 | 4 | Actions נתקע על permissions | allowlist מפורש + `--max-turns`; fallback מתועד ל-Docker |
