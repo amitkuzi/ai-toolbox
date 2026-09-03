@@ -22,10 +22,12 @@ below returns L0, stop there — most of this skill doesn't apply and no
    `rules/04-tool-ranking.md`, `rules/07-data-contract.md`. (`rules/06-safety.md`
    applies throughout but doesn't drive a routing decision.)
 
-2. **Load the active profile.** Default to `profiles/amit.yaml` unless the
-   session names a different profile; fall back to `profiles/_default.yaml`
-   if the named profile doesn't exist. This gives you `weights`, `privacy_default`,
-   `license_policy`, `budget_usd_per_task`, `task_type_affinity`.
+2. **Load the active profile.** Query the default profile via 
+   `python scripts/store.py get-default-profile` (typically `amit`). Unless 
+   the session explicitly names a different profile, use that default profile; 
+   fall back to `profiles/_default.yaml` if the named profile doesn't exist. 
+   This gives you `weights`, `privacy_default`, `license_policy`, 
+   `budget_usd_per_task`, `task_type_affinity`.
 
 3. **Decision 1 — swarm gate** (`rules/01-swarm-gate.md`). Classify the task
    L0–L3. If **L0**: answer inline, do not continue to steps 4–8, do not

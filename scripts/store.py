@@ -27,6 +27,7 @@ import yaml  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_BASE_DIR = REPO_ROOT / "catalog"
+CONFIG_FILE = REPO_ROOT / ".toolbox-config.json"
 
 # kind prefix -> ledger collection
 KIND_COLLECTION = {
@@ -95,6 +96,52 @@ def new_ulid() -> str:
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
+
+# --------------------------------------------------------- Config Management --
+def load_config() -> dict:
+    """Load toolbox configuration from .toolbox-config.json."""
+    if CONFIG_FILE.exists():
+        try:
+            with open(CONFIG_FILE) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+
+def save_config(config: dict) -> None:
+    """Save toolbox configuration to .toolbox-config.json."""
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(config, f, indent=2)
+
+
+def get_default_profile() -> str:
+    """Get the default profile name. Falls back to amit.yaml."""
+    config = load_config()
+    return config.get("default_profile", "amit")
+
+
+def set_default_profile(profile_name: str) -> str:
+    """Set the default profile and return the full path."""
+    profile_path = REPO_ROOT / "profiles" / f"{profile_name}.yaml"
+    if not profile_path.exists():
+        raise ValueError(f"Profile '{profile_name}' not found at {profile_path}")
+    config = load_config()
+    config["default_profile"] = profile_name
+    save_config(config)
+    return profile_name
+
+
+def list_profiles() -> list[str]:
+    """List all available profiles."""
+    profiles_dir = REPO_ROOT / "profiles"
+    profiles = []
+    for f in profiles_dir.glob("*.yaml"):
+        # Exclude .gitkeep and other dotfiles
+        if f.name != ".gitkeep" and not f.name.startswith("."):
+            profiles.append(f.stem)
+    return sorted(profiles)
 
 
 # --------------------------------------------------------- rules_version --
@@ -505,6 +552,13 @@ def main(argv=None):
     p_trace = sub.add_parser("trace")
     p_trace.add_argument("subject_id")
 
+    p_list_profiles = sub.add_parser("list-profiles")
+
+    p_set_profile = sub.add_parser("set-default-profile")
+    p_set_profile.add_argument("profile_name")
+
+    p_get_profile = sub.add_parser("get-default-profile")
+
     args = parser.parse_args(argv)
     store = Store(backend_name=args.backend, base_dir=args.base_dir)
 
@@ -533,6 +587,18 @@ def main(argv=None):
         for ev in chain:
             print(f"{ev['ts']}  {ev['kind']:<16} {ev['actor']:<24} {ev.get('reason', '')}")
             print(f"    payload: {json.dumps(ev['payload'], ensure_ascii=False)}")
+    elif args.cmd == "list-profiles":
+        profiles = list_profiles()
+        default = get_default_profile()
+        for p in profiles:
+            marker = " (default)" if p == default else ""
+            print(f"  {p}{marker}")
+    elif args.cmd == "set-default-profile":
+        profile_name = set_default_profile(args.profile_name)
+        print(f"Default profile set to: {profile_name}")
+    elif args.cmd == "get-default-profile":
+        profile = get_default_profile()
+        print(profile)
 
 
 if __name__ == "__main__":
